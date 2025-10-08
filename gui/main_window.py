@@ -1,0 +1,21 @@
+from tkinter import Tk, Frame
+
+
+
+class MainWindow():
+    def __init__(self):
+        self.main_window = Tk()
+        self.main_window.title("Sprout Island")
+        self.main_window.geometry("1080x720")
+        self.main_window.minsize(480, 360)
+        self.main_window.iconbitmap("../src/teemo_basic.ico")
+        self.main_window.config(background="#2cdf85")
+
+    def run(self):
+        self.main_window.mainloop()
+
+
+
+if __name__ == "__main__":
+    app = MainWindow()
+    app.run()
