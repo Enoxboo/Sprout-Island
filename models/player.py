@@ -3,6 +3,9 @@ from config import (SATIETY_MAX, HYDRATION_MAX, ENERGY_MAX,
                     SATIETY_GAIN, HYDRATION_GAIN, ENERGY_GAIN,
                     SATIETY_LOSS, HYDRATION_LOSS, ENERGY_LOSS)
 
+from utils.helpers import clamp
+
+
 class Player:
     def __init__(self, name):
         self.name = name
@@ -17,31 +20,17 @@ class Player:
         }
 
     def _fish(self):
-        self.satiety += SATIETY_GAIN
-        if self.satiety > SATIETY_MAX:
-            self.satiety = SATIETY_MAX
-        self.energy -= ENERGY_MIN
-        if self.energy < ENERGY_MIN:
-            self.energy = ENERGY_MIN
+        self.satiety = clamp(self.satiety + SATIETY_GAIN, SATIETY_MIN, SATIETY_MAX)
+        self.energy = clamp(self.energy - ENERGY_LOSS, ENERGY_MIN, ENERGY_MAX)
 
     def _drink(self):
-        self.hydration += HYDRATION_GAIN
-        if self.hydration > HYDRATION_MAX:
-            self.hydration = HYDRATION_MAX
-        self.energy -= ENERGY_LOSS
-        if self.energy < ENERGY_MIN:
-            self.energy = ENERGY_MIN
+        self.hydration = clamp(self.hydration + HYDRATION_GAIN, HYDRATION_MIN, HYDRATION_MAX)
+        self.energy = clamp(self.energy - ENERGY_LOSS, ENERGY_MIN, ENERGY_MAX)
 
     def _sleep(self):
-        self.energy += ENERGY_GAIN
-        if self.energy > ENERGY_MAX:
-            self.energy = ENERGY_MAX
-        self.satiety -= SATIETY_LOSS
-        if self.satiety < SATIETY_MIN:
-            self.satiety = SATIETY_MIN
-        self.hydration -= HYDRATION_LOSS
-        if self.hydration > HYDRATION_MIN:
-            self.hydration = HYDRATION_MIN
+        self.energy = clamp(self.energy + ENERGY_GAIN, ENERGY_MIN, ENERGY_MAX)
+        self.satiety = clamp(self.satiety - SATIETY_LOSS, SATIETY_MIN, SATIETY_MAX)
+        self.hydration = clamp(self.hydration - HYDRATION_LOSS, HYDRATION_MIN, HYDRATION_MAX)
 
     def _explore(self):
         pass
