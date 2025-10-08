@@ -1,4 +1,3 @@
-# tests/test_player.py
 from models.player import Player
 from config import (SATIETY_MAX, HYDRATION_MAX, ENERGY_MAX,
                     SATIETY_MIN, HYDRATION_MIN, ENERGY_MIN,
@@ -7,7 +6,6 @@ from config import (SATIETY_MAX, HYDRATION_MAX, ENERGY_MAX,
 
 
 def test_player_init():
-    """Test la création du joueur"""
     player = Player("Alice")
     assert player.name == "Alice"
     assert player.satiety == SATIETY_MAX
@@ -17,7 +15,6 @@ def test_player_init():
 
 
 def test_fish():
-    """Test l'action pêcher"""
     player = Player("Test")
     player.satiety = 50
     player.energy = 100
@@ -30,7 +27,6 @@ def test_fish():
 
 
 def test_drink():
-    """Test l'action boire"""
     player = Player("Test")
     player.hydration = 50
     player.energy = 100
@@ -43,7 +39,6 @@ def test_drink():
 
 
 def test_sleep():
-    """Test l'action dormir"""
     player = Player("Test")
     player.energy = 50
     player.satiety = 100
@@ -58,7 +53,6 @@ def test_sleep():
 
 
 def test_clamp_max():
-    """Test que les stats ne dépassent pas le max"""
     player = Player("Test")
     player.satiety = SATIETY_MAX
     player.hydration = HYDRATION_MAX
@@ -75,14 +69,13 @@ def test_clamp_max():
 
 
 def test_clamp_min():
-    """Test que les stats ne descendent pas sous le min"""
     player = Player("Test")
     player.satiety = SATIETY_MIN + 1
     player.hydration = HYDRATION_MIN + 1
     player.energy = ENERGY_MIN + 1
 
-    player._sleep()  # Baisse satiety et hydration
-    player._fish()  # Baisse energy
+    player._sleep()
+    player._fish()
 
     assert player.satiety >= SATIETY_MIN
     assert player.hydration >= HYDRATION_MIN
@@ -91,7 +84,6 @@ def test_clamp_min():
 
 
 def test_do_action_valid():
-    """Test do_action avec une action valide"""
     player = Player("Test")
     player.satiety = 50
 
@@ -103,7 +95,6 @@ def test_do_action_valid():
 
 
 def test_do_action_invalid():
-    """Test do_action avec une action invalide"""
     player = Player("Test")
 
     result = player.do_action("invalid_action")
@@ -113,7 +104,6 @@ def test_do_action_invalid():
 
 
 def test_all_actions():
-    """Test que toutes les actions sont présentes"""
     player = Player("Test")
 
     assert "fish" in player.actions
@@ -123,7 +113,6 @@ def test_all_actions():
     print("✓ Toutes les actions présentes OK")
 
 
-# Fonction pour lancer tous les tests
 def run_all_tests():
     print("\n=== Lancement des tests ===\n")
 
