@@ -36,4 +36,8 @@ class Player:
         pass
 
     def do_action(self, action_name):
-        pass
+        action = self.actions.get(action_name)
+        if action:
+            action()
+            return True
+        return False
