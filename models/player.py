@@ -28,7 +28,15 @@ class Player:
             self.energy = 0
 
     def _sleep(self):
-        pass
+        self.energy += 10
+        if self.energy > 100:
+            self.energy = 100
+        self.satiety -= 10
+        if self.satiety < 0:
+            self.satiety = 0
+        self.hydration -= 10
+        if self.hydration > 100:
+            self.hydration = 100
 
     def _explore(self):
         pass
