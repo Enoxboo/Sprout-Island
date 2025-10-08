@@ -20,7 +20,12 @@ class Player:
             self.energy = 0
 
     def _drink(self):
-        pass
+        self.hydration += 10
+        if self.hydration > 100:
+            self.hydration = 100
+        self.energy -= 10
+        if self.energy < 0:
+            self.energy = 0
 
     def _sleep(self):
         pass
