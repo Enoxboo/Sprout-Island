@@ -1,8 +1,8 @@
 from tkinter import Tk, Frame
+from dialogue_frame import DialogueFrame
 
 
-
-class MainWindow():
+class MainWindow:
     def __init__(self):
         self.main_window = Tk()
         self.main_window.title("Sprout Island")
@@ -10,6 +10,8 @@ class MainWindow():
         self.main_window.minsize(480, 360)
         self.main_window.iconbitmap("../src/teemo_basic.ico")
         self.main_window.config(background="#2cdf85")
+        self.dialogue_frame = DialogueFrame(self.main_window)
+
 
     def run(self):
         self.main_window.mainloop()
