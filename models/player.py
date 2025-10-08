@@ -8,10 +8,10 @@ from utils.helpers import clamp
 
 class Player:
     def __init__(self, name):
-        self.name = name
-        self.satiety = SATIETY_MAX
-        self.hydration = HYDRATION_MAX
-        self.energy = ENERGY_MAX
+        self.name: str = name
+        self.satiety: int = SATIETY_MAX
+        self.hydration: int = HYDRATION_MAX
+        self.energy: int = ENERGY_MAX
         self.actions = {
             "fish": self._fish,
             "drink": self._drink,
