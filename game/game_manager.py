@@ -5,26 +5,29 @@ class GameManager:
     def __init__(self):
         self.game_over = False
         self.days = 0
+        self.game_over_reason = ""
 
     def increment_day(self):
-        """Incrémente le compteur de jours"""
         self.days += 1
 
     def check_win_condition(self):
-        """Vérifie si la condition de victoire est atteinte"""
         if self.days >= DAYS_TO_WIN:
-            self.game_over = True
+            self.end_game(reason="victory")
             return True
         return False
 
     def is_game_over(self):
-        """Retourne l'état du jeu"""
         return self.game_over
 
-    def end_game(self):
-        """Termine le jeu manuellement"""
+    def end_game(self, reason=""):
         self.game_over = True
+        self.game_over_reason = reason
+
+    def check_loss_condition(self, player):
+        if player.is_dead():
+            self.end_game(reason="defeat")
+            return True
+        return False
 
     def get_days(self):
-        """Retourne le nombre de jours écoulés"""
         return self.days

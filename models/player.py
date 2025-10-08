@@ -19,6 +19,9 @@ class Player:
             "explore": self._explore,
         }
 
+    def is_dead(self):
+        return self.satiety <= SATIETY_MIN or self.hydration <= HYDRATION_MIN or self.energy <= ENERGY_MIN
+
     def _fish(self):
         self.satiety = clamp(self.satiety + SATIETY_GAIN, SATIETY_MIN, SATIETY_MAX)
         self.energy = clamp(self.energy - ENERGY_LOSS, ENERGY_MIN, ENERGY_MAX)
