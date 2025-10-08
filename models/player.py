@@ -12,7 +12,12 @@ class Player:
         }
 
     def _fish(self):
-        pass
+        self.satiety += 10
+        if self.satiety > 100:
+            self.satiety = 100
+        self.energy -= 10
+        if self.energy < 0:
+            self.energy = 0
 
     def _drink(self):
         pass
