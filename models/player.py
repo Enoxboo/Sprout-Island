@@ -1,9 +1,14 @@
+from config import (SATIETY_MAX, HYDRATION_MAX, ENERGY_MAX,
+                    SATIETY_MIN, HYDRATION_MIN, ENERGY_MIN,
+                    SATIETY_GAIN, HYDRATION_GAIN, ENERGY_GAIN,
+                    SATIETY_LOSS, HYDRATION_LOSS, ENERGY_LOSS)
+
 class Player:
     def __init__(self, name):
         self.name = name
-        self.satiety = 100
-        self.hydration = 100
-        self.energy = 100
+        self.satiety = SATIETY_MAX
+        self.hydration = HYDRATION_MAX
+        self.energy = ENERGY_MAX
         self.actions = {
             "fish": self._fish,
             "drink": self._drink,
@@ -12,31 +17,31 @@ class Player:
         }
 
     def _fish(self):
-        self.satiety += 10
-        if self.satiety > 100:
-            self.satiety = 100
-        self.energy -= 10
-        if self.energy < 0:
-            self.energy = 0
+        self.satiety += SATIETY_GAIN
+        if self.satiety > SATIETY_MAX:
+            self.satiety = SATIETY_MAX
+        self.energy -= ENERGY_MIN
+        if self.energy < ENERGY_MIN:
+            self.energy = ENERGY_MIN
 
     def _drink(self):
-        self.hydration += 10
-        if self.hydration > 100:
-            self.hydration = 100
-        self.energy -= 10
-        if self.energy < 0:
-            self.energy = 0
+        self.hydration += HYDRATION_GAIN
+        if self.hydration > HYDRATION_MAX:
+            self.hydration = HYDRATION_MAX
+        self.energy -= ENERGY_LOSS
+        if self.energy < ENERGY_MIN:
+            self.energy = ENERGY_MIN
 
     def _sleep(self):
-        self.energy += 10
-        if self.energy > 100:
-            self.energy = 100
-        self.satiety -= 10
-        if self.satiety < 0:
-            self.satiety = 0
-        self.hydration -= 10
-        if self.hydration > 100:
-            self.hydration = 100
+        self.energy += ENERGY_GAIN
+        if self.energy > ENERGY_MAX:
+            self.energy = ENERGY_MAX
+        self.satiety -= SATIETY_LOSS
+        if self.satiety < SATIETY_MIN:
+            self.satiety = SATIETY_MIN
+        self.hydration -= HYDRATION_LOSS
+        if self.hydration > HYDRATION_MIN:
+            self.hydration = HYDRATION_MIN
 
     def _explore(self):
         pass
