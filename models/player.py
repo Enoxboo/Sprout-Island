@@ -2,6 +2,7 @@ from config import (SATIETY_MAX, HYDRATION_MAX, ENERGY_MAX,
                     SATIETY_MIN, HYDRATION_MIN, ENERGY_MIN,
                     SATIETY_GAIN, HYDRATION_GAIN, ENERGY_GAIN,
                     SATIETY_LOSS, HYDRATION_LOSS, ENERGY_LOSS)
+from game.events import Event
 
 from utils.helpers import clamp
 
@@ -36,7 +37,7 @@ class Player:
         self.hydration = clamp(self.hydration - HYDRATION_LOSS, HYDRATION_MIN, HYDRATION_MAX)
 
     def _explore(self):
-        pass
+        Event().trigger_explore_event()
 
     def do_action(self, action_name):
         action = self.actions.get(action_name)

@@ -31,12 +31,12 @@ class Event:
             },
             {
                 'name': 'found_cramptés',
-                'handler': self._crampte(),
+                'handler': self._crampte,
                 'weight': 0.01
             },
         ]
 
-    def trigger_daily_event(self):
+    def trigger_explore_event(self):
         event = random.choices(
             self.events,
             weights=[e['weight'] for e in self.events]
