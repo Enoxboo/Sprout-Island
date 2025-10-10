@@ -41,3 +41,6 @@ class Player:
             action()
             return True
         return False
+
+    def status(self):
+        print(f"Player status: {self.name}. {self.satiety}. {self.hydration}. {self.energy}.")
