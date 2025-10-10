@@ -29,6 +29,11 @@ class Event:
                 'handler': self._fish_rod,
                 'weight': 1
             },
+            {
+                'name': 'found_cramptés',
+                'handler': self._crampte(),
+                'weight': 0.01
+            },
         ]
 
     def trigger_daily_event(self):
@@ -54,6 +59,10 @@ class Event:
     def _fruit(self):
         print("🍎 Tu trouves un fruit !")
         return {'type': 'item', 'item': 'fruit'}
+
+    def _crampte(self):
+        print("😮 Tu trouves une paire de cramptés !")
+        return {'type': 'item', 'item': 'crampte'}
 
     def _fish_rod(self):
         print("🎣 Tu trouves une canne à pêche !")
