@@ -18,8 +18,7 @@ def run_game():
         if choice in player.actions:
             player.do_action(choice)
             game_manager.increment_day()
-            print(f"\nÉtat actuel :")
-            print(f"Faim : {player.satiety}, Énergie : {player.energy}, Soif : {player.hydration}")
+            player.status()
 
             if game_manager.check_loss_condition(player):
                 print("\nGame Over")
