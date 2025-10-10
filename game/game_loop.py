@@ -1,3 +1,4 @@
+from game.events import Event
 from models.player import Player
 from game.game_manager import GameManager
 
@@ -8,6 +9,7 @@ def run_game():
     print("Tu te réveilles sur une île de sprout et essaies de te souvenir de ton nom...")
     choice = input()
     player = Player(choice)
+    event = Event()
 
     while not game_manager.is_game_over():
         print(f"Jour {game_manager.get_days()}")
@@ -17,6 +19,7 @@ def run_game():
 
         if choice in player.actions:
             player.do_action(choice)
+            event.trigger_daily_event()
             game_manager.increment_day()
             player.status()
 
