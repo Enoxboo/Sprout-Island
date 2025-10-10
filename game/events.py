@@ -11,17 +11,17 @@ class Event:
             },
             {
                 'name': 'boar_attack',
-                'handler': self._fish_rod,
+                'handler': self._boar,
                 'weight': 1
             },
             {
                 'name': 'start_raining',
-                'handler': self._fish_rod,
+                'handler': self._rain,
                 'weight': 2
             },
             {
                 'name': 'found_fruit',
-                'handler': self._fish_rod,
+                'handler': self._fruit,
                 'weight': 3
             },
             {
@@ -41,20 +41,20 @@ class Event:
 
     def _wolf(self):
         print("🐺 Tu rencontres un loup !")
-        return
+        return {'type': 'combat', 'enemy': 'wolf'}
 
     def _boar(self):
-        print("Tu rencontres un sanglier !")
-        return
+        print("🐗 Tu rencontres un sanglier !")
+        return {'type': 'combat', 'enemy': 'boar'}
 
     def _rain(self):
-        print("Il pleut")
-        return
+        print("🌧️ Il commence à pleuvoir...")
+        return {'type': 'weather', 'effect': 'rain'}
 
     def _fruit(self):
-        print("Tu trouves un fruit")
-        return
+        print("🍎 Tu trouves un fruit !")
+        return {'type': 'item', 'item': 'fruit'}
 
     def _fish_rod(self):
         print("🎣 Tu trouves une canne à pêche !")
-        return
+        return {'type': 'item', 'item': 'fish_rod'}
