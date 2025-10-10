@@ -37,7 +37,14 @@ class Player:
         self.hydration = clamp(self.hydration - HYDRATION_LOSS, HYDRATION_MIN, HYDRATION_MAX)
 
     def _explore(self):
-        Event().trigger_explore_event()
+        event_result = Event().trigger_explore_event()
+
+        if event_result['type'] == 'item':
+            self._handle_item_found(event_result)
+        elif event_result['type'] == 'weather':
+            self._handle_weather(event_result)
+
+        self.energy = clamp(self.energy - ENERGY_LOSS, ENERGY_MIN, ENERGY_MAX)
 
     def do_action(self, action_name):
         action = self.actions.get(action_name)
@@ -45,6 +52,20 @@ class Player:
             action()
             return True
         return False
+
+    def _handle_item_found(self, event_result):
+        item = event_result['item']
+
+        if item == 'fruit':
+            self.satiety = clamp(self.satiety + 5, SATIETY_MIN, SATIETY_MAX)
+            print(f"→ Tu manges le fruit (+5 satiété)")
+
+    def _handle_weather(self, event_result):
+        effect = event_result['effect']
+
+        if effect == 'rain':
+            self.hydration = clamp(self.hydration + 10, HYDRATION_MIN, HYDRATION_MAX)
+            print(f"→ Tu récupères de l'eau de pluie (+10 hydratation)")
 
     def status(self):
         print(f"Player status: {self.name}. {self.satiety}. {self.hydration}. {self.energy}.")
