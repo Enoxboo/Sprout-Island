@@ -1,4 +1,5 @@
-from tkinter import Tk, Frame
+from tkinter import Tk
+from button_frame import ButtonsFrame
 from dialogue_frame import DialogueFrame
 
 
@@ -11,6 +12,8 @@ class MainWindow:
         self.main_window.iconbitmap("../src/teemo_basic.ico")
         self.main_window.config(background="#2cdf85")
         self.dialogue_frame = DialogueFrame(self.main_window)
+        self.dialogue_frame.update_text("Welcome to Sprout Island!")
+        self.buttons_frame = ButtonsFrame(self.main_window)
 
 
     def run(self):
