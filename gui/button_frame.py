@@ -34,7 +34,6 @@ class RoundedButton(Canvas):
         return self.create_polygon(points, smooth=True, **kwargs)
 
     def _on_click(self, event):
-        # Enter button click logic here
         if self.command:
             self.command()
 
