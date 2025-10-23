@@ -1,7 +1,6 @@
 from tkinter import Frame , Label
 from PIL import Image, ImageTk
 
-
 class DialogueFrame(Frame):
     def __init__(self, parent):
         super().__init__(parent , bg=parent.cget("background"))
@@ -15,8 +14,10 @@ class DialogueFrame(Frame):
         self.bg_label = Label(self, image=self.bg_photo , background=parent.cget("background"))
         self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-        self.label = Label(self, text="Hello, Frame!" , bg='#E8CFA6', fg="white", font=("Arial", 25))
+
+        self.label = Label(self, text="" , bg='#E8CFA6', fg="Black" , font=("Sprout", 20))
         self.label.place(relx=0.5, rely=0.5, anchor="center")
+
 
         self.bind("<Configure>", self.resize_background)
 
@@ -44,3 +45,7 @@ class DialogueFrame(Frame):
             self.label.config(bg=parent_bg)
 
         self.after(200, self.check_parent_bg)
+
+    def update_text(self, new_text):
+        self.label.config(text=new_text)
+
