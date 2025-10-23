@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from models.player import Player
+
 
 
 class StatusFrame(tk.Frame ):
