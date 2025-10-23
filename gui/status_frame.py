@@ -1,11 +1,10 @@
 import tkinter as tk
 from tkinter import ttk
-from models.player import Player
 
 class StatusFrame(tk.Frame):
     def __init__(self, parent, player, **kwargs):
         super().__init__(parent, **kwargs)
-        self.configure(bg="#333333", padx=10, pady=10)
+        self.configure(bg="#2cdf85", padx=10, pady=10)
 
         self.player = player
 
@@ -16,7 +15,7 @@ class StatusFrame(tk.Frame):
         self._create_widgets()
 
     def _create_stat_bar(self, name, variable, color):
-        frame = tk.Frame(self, bg="#333333")
+        frame = tk.Frame(self, bg="#2cdf85")
         frame.pack(fill="x", pady=5)
 
         label = tk.Label(frame, text=name, width=8, anchor="w", bg="#333333", fg="white")
@@ -55,5 +54,3 @@ class StatusFrame(tk.Frame):
         self.energy_var.set(self.player.energy)
         self.satiety_var.set(self.player.satiety)
         self.hydration_var.set(self.player.hydration)
-
-
