@@ -1,3 +1,4 @@
+import os
 from tkinter import Frame , Label
 from PIL import Image, ImageTk
 
@@ -8,7 +9,10 @@ class DialogueFrame(Frame):
         self.config(width=100, height=200)
         self.pack(side="bottom", fill="x")
 
-        self.original_image = Image.open("../src/dialogue_box.png")
+        dir = os.path.dirname(__file__)
+        root= os.path.dirname(dir)
+        src = os.path.join(root, "src", "dialogue_box.png")
+        self.original_image = Image.open(src)
         self.bg_photo = ImageTk.PhotoImage(self.original_image)
 
         self.bg_label = Label(self, image=self.bg_photo , background=parent.cget("background"))

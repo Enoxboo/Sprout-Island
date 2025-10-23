@@ -1,17 +1,16 @@
 import tkinter as tk
 from tkinter import ttk
 
-class StatusFrame(tk.Frame):
+
+
+class StatusFrame(tk.Frame ):
     def __init__(self, parent, player, **kwargs):
         super().__init__(parent, **kwargs)
         self.configure(bg="#2cdf85", padx=10, pady=10)
-
-        self.player = player
-
         self.energy_var = tk.DoubleVar(value=player.energy)
         self.satiety_var = tk.DoubleVar(value=player.satiety)
         self.hydration_var = tk.DoubleVar(value=player.hydration)
-
+        self.player = player
         self._create_widgets()
 
     def _create_stat_bar(self, name, variable, color):
@@ -45,12 +44,14 @@ class StatusFrame(tk.Frame):
                               bg="#333333", fg="white")
         title_label.pack(pady=(0, 10))
 
-        self._create_stat_bar("ENERGY", self.energy_var, "red")
-        self._create_stat_bar("SATIÉTÉ", self.satiety_var, "green")
-        self._create_stat_bar("SOIF", self.hydration_var, "blue")
+        self._create_stat_bar("ENERGY", self.energy_var, "#4CAF50")
+        self._create_stat_bar("SATIÉTÉ", self.satiety_var, "#FF9800")
+        self._create_stat_bar("SOIF", self.hydration_var,  "#2196F3")
 
 
     def update_from_player(self):
         self.energy_var.set(self.player.energy)
         self.satiety_var.set(self.player.satiety)
         self.hydration_var.set(self.player.hydration)
+        self.update()
+        self.update_idletasks()
