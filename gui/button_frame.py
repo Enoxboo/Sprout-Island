@@ -1,3 +1,4 @@
+import threading
 from tkinter import Frame, Label, Button, Canvas
 
 class RoundedButton(Canvas):
@@ -17,8 +18,6 @@ class RoundedButton(Canvas):
         self.text_item = self.create_text(width//2, height//2, text=text, font=font, fill="black")
 
         self.bind("<Button-1>", self._on_click)
-        self.bind("<Enter>", self._on_enter)
-        self.bind("<Leave>", self._on_leave)
 
     def create_rounded_rect(self, x1, y1, x2, y2, radius, **kwargs):
         points = [
@@ -37,31 +36,43 @@ class RoundedButton(Canvas):
         if self.command:
             self.command()
 
-    def _on_enter(self, event):
-        self.itemconfig(self.bg_item, fill="#FFE3B3")
-
-    def _on_leave(self, event):
-        self.itemconfig(self.bg_item, fill="#E8CFA6")
-
 
 class ButtonsFrame(Frame):
     def __init__(self, parent):
         super().__init__(parent, bg=parent.cget("background"))
         self.parent = parent
-        self.config(width=50, height=50)  # Augmenté la hauteur
+        self.config(width=50, height=50)
         self.pack(side="bottom", fill="x", pady=(0, 50))
 
+        self.player_choice = None
+        self.choice_event = threading.Event()
 
-        self.button1 = RoundedButton(self, text="Fish", command=lambda: print("Fish"))
-        self.button2 = RoundedButton(self, text="Explore", command=lambda: print("Explore"))
-        self.button3 = RoundedButton(self, text="Sleep", command=lambda: print("Sleep"))
-        self.button4 = RoundedButton(self, text="Drink", command=lambda: print("Drink"))
+        self.button1 = RoundedButton(self, text="Fish", command=lambda: self.make_choice("fish"))
+        self.button2 = RoundedButton(self, text="Explore", command=lambda: self.make_choice("explore"))
+        self.button3 = RoundedButton(self, text="Sleep", command=lambda: self.make_choice("sleep"))
+        self.button4 = RoundedButton(self, text="Drink", command=lambda: self.make_choice("drink"))
 
 
         self.button1.place(relx=0.125, rely=0.5, anchor="center")
         self.button2.place(relx=0.375, rely=0.5, anchor="center")
         self.button3.place(relx=0.625, rely=0.5, anchor="center")
         self.button4.place(relx=0.875, rely=0.5, anchor="center")
+
+    def make_choice(self, choice):
+        self.player_choice = choice
+        print(f"Player chose: {choice}")
+        self.choice_event.set()
+
+    def get_player_choice(self):
+
+        self.player_choice = None
+        self.choice_event.clear()
+
+        while not self.choice_event.is_set():
+            self.parent.update()
+            self.parent.update_idletasks()
+
+        return self.player_choice
 
     def check_parent_bg(self):
         parent_bg = self.parent.cget("background")
