@@ -32,5 +32,21 @@ class StartFrame(Frame):
         )
         self.new_game_button.pack(pady=10)
 
+        if self.has_save:
+            self.load_game_button = Button(
+                self,
+                text="Charger Partie",
+                font=("Arial", 16),
+                background="#e2a04a",
+                foreground="white",
+                padx=20,
+                pady=10,
+                command=self.load_existing_game
+            )
+            self.load_game_button.pack(pady=10)
+
+    def load_existing_game(self):
+        print("Charger partie cliquée!")
+
     def start_new_game(self):
         pass
