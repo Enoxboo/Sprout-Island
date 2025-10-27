@@ -1,4 +1,4 @@
-from tkinter import Frame, Label
+from tkinter import Frame, Label, Button
 
 from utils.save_manager import SaveManager
 
@@ -19,3 +19,18 @@ class StartFrame(Frame):
             foreground="white"
         )
         self.title_label.pack(pady=50)
+
+        self.new_game_button = Button(
+            self,
+            text="Nouvelle Partie",
+            font=("Arial", 16),
+            background="#4a90e2",
+            foreground="white",
+            padx=20,
+            pady=10,
+            command=self.start_new_game
+        )
+        self.new_game_button.pack(pady=10)
+
+    def start_new_game(self):
+        pass
