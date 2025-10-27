@@ -1,6 +1,7 @@
 import threading
 from tkinter import Frame, Label, Button, Canvas
 
+
 class RoundedButton(Canvas):
     def __init__(self, parent, text, bg_color="#E8CFA6", command=None, width=200, height=80,
                  corner_radius=15, font=("Arial", 25)):
@@ -14,21 +15,21 @@ class RoundedButton(Canvas):
         )
         self.command = command
 
-        self.bg_item = self.create_rounded_rect(5, 5, width-5, height-5, corner_radius, fill=bg_color, outline="")
-        self.text_item = self.create_text(width//2, height//2, text=text, font=font, fill="black")
+        self.bg_item = self.create_rounded_rect(5, 5, width - 5, height - 5, corner_radius, fill=bg_color, outline="")
+        self.text_item = self.create_text(width // 2, height // 2, text=text, font=font, fill="black")
 
         self.bind("<Button-1>", self._on_click)
 
     def create_rounded_rect(self, x1, y1, x2, y2, radius, **kwargs):
         points = [
-            x1+radius, y1,
-            x2-radius, y1,
-            x2, y1+radius,
-            x2, y2-radius,
-            x2-radius, y2,
-            x1+radius, y2,
-            x1, y2-radius,
-            x1, y1+radius
+            x1 + radius, y1,
+            x2 - radius, y1,
+            x2, y1 + radius,
+            x2, y2 - radius,
+            x2 - radius, y2,
+            x1 + radius, y2,
+            x1, y2 - radius,
+            x1, y1 + radius
         ]
         return self.create_polygon(points, smooth=True, **kwargs)
 
@@ -51,7 +52,6 @@ class ButtonsFrame(Frame):
         self.button2 = RoundedButton(self, text="Explore", command=lambda: self.make_choice("explore"))
         self.button3 = RoundedButton(self, text="Sleep", command=lambda: self.make_choice("sleep"))
         self.button4 = RoundedButton(self, text="Drink", command=lambda: self.make_choice("drink"))
-
 
         self.button1.place(relx=0.125, rely=0.5, anchor="center")
         self.button2.place(relx=0.375, rely=0.5, anchor="center")

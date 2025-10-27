@@ -7,7 +7,7 @@ from models.player import Player
 
 
 class MainWindow:
-    def __init__(self ,player):
+    def __init__(self, player):
         self.main_window = Tk()
         self.main_window.title("Sprout Island")
         self.main_window.geometry("1080x720")
@@ -18,10 +18,11 @@ class MainWindow:
         self.main_window.iconbitmap(ico_path)
         self.main_window.config(background="#2cdf85")
         player1 = player
-        self.status_frame = StatusFrame(self.main_window , player1)
+        self.status_frame = StatusFrame(self.main_window, player1)
         self.status_frame.pack(side="top", fill="x")
         self.dialogue_frame = DialogueFrame(self.main_window)
         self.dialogue_frame.update_text("Welcome to Sprout Island!")
         self.buttons_frame = ButtonsFrame(self.main_window)
+
     def run(self):
         self.main_window.mainloop()

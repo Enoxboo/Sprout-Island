@@ -2,8 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 
 
-
-class StatusFrame(tk.Frame ):
+class StatusFrame(tk.Frame):
     def __init__(self, parent, player, **kwargs):
         super().__init__(parent, **kwargs)
         self.configure(bg="#2cdf85", padx=10, pady=10)
@@ -41,13 +40,12 @@ class StatusFrame(tk.Frame ):
 
     def _create_widgets(self):
         title_label = tk.Label(self, text="STATUT DU JOUEUR", font=("Arial", 12, "bold"),
-                              bg="#333333", fg="white")
+                               bg="#333333", fg="white")
         title_label.pack(pady=(0, 10))
 
         self._create_stat_bar("ENERGY", self.energy_var, "#4CAF50")
         self._create_stat_bar("SATIÉTÉ", self.satiety_var, "#FF9800")
-        self._create_stat_bar("SOIF", self.hydration_var,  "#2196F3")
-
+        self._create_stat_bar("SOIF", self.hydration_var, "#2196F3")
 
     def update_from_player(self):
         self.energy_var.set(self.player.energy)
