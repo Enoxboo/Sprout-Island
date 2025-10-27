@@ -1,5 +1,6 @@
 from tkinter import Frame, Label, Button, Entry
 
+from game.game_manager import GameManager
 from utils.save_manager import SaveManager
 from models.player import Player
 from gui.main_window import MainWindow
@@ -47,16 +48,20 @@ class StartFrame(Frame):
             self.load_game_button.pack(pady=10)
 
     def load_existing_game(self):
-        loaded_player = SaveManager.load_player()
+        save_data = SaveManager.load_game()
 
-        if loaded_player is None:
+        if save_data is None:
             print("Erreur lors du chargement de la sauvegarde!")
             return
+
+        loaded_player = SaveManager.load_player()
+        game_manager = GameManager()
+        game_manager.days = save_data['game']['days']
 
         root = self.winfo_toplevel()
         root.destroy()
 
-        main_window = MainWindow(loaded_player)
+        main_window = MainWindow(loaded_player, game_manager)
         main_window.run()
 
     def start_new_game(self):

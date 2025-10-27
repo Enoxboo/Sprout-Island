@@ -40,43 +40,46 @@ class RoundedButton(Canvas):
 
 class ButtonsFrame(Frame):
     def __init__(self, parent):
-        super().__init__(parent, bg=parent.cget("background"))
-        self.parent = parent
-        self.config(width=50, height=50)
-        self.pack(side="bottom", fill="x", pady=(0, 50))
+        super().__init__(parent)
+        self.config(background="#2cdf85")
+        self.pack(side="bottom", fill="both", expand=True)
 
-        self.player_choice = None
-        self.choice_event = threading.Event()
+        self.action_callback = None
+        self.buttons = {}
 
-        self.button1 = RoundedButton(self, text="Fish", command=lambda: self.make_choice("fish"))
-        self.button2 = RoundedButton(self, text="Explore", command=lambda: self.make_choice("explore"))
-        self.button3 = RoundedButton(self, text="Sleep", command=lambda: self.make_choice("sleep"))
-        self.button4 = RoundedButton(self, text="Drink", command=lambda: self.make_choice("drink"))
+        actions = [
+            ("fish", "🎣 Pêcher"),
+            ("drink", "💧 Boire"),
+            ("sleep", "😴 Dormir"),
+            ("explore", "🗺️ Explorer"),
+            ("quit", "🚪 Quitter")
+        ]
 
-        self.button1.place(relx=0.125, rely=0.5, anchor="center")
-        self.button2.place(relx=0.375, rely=0.5, anchor="center")
-        self.button3.place(relx=0.625, rely=0.5, anchor="center")
-        self.button4.place(relx=0.875, rely=0.5, anchor="center")
+        for action, text in actions:
+            btn = Button(
+                self,
+                text=text,
+                font=("Arial", 14),
+                background="#4a90e2",
+                foreground="white",
+                padx=20,
+                pady=10,
+                command=lambda a=action: self.on_button_click(a)
+            )
+            btn.pack(side="left", padx=10, pady=20, expand=True)
+            self.buttons[action] = btn
 
-    def make_choice(self, choice):
-        self.player_choice = choice
-        print(f"Player chose: {choice}")
-        self.choice_event.set()
+    def set_action_callback(self, callback):
+        self.action_callback = callback
 
-    def get_player_choice(self):
+    def on_button_click(self, action):
+        if self.action_callback:
+            self.action_callback(action)
 
-        self.player_choice = None
-        self.choice_event.clear()
+    def disable_buttons(self):
+        for button in self.buttons.values():
+            button.config(state="disabled")
 
-        while not self.choice_event.is_set():
-            self.parent.update()
-            self.parent.update_idletasks()
-
-        return self.player_choice
-
-    def check_parent_bg(self):
-        parent_bg = self.parent.cget("background")
-        current_bg = self.cget("background")
-        if parent_bg != current_bg:
-            self.config(bg=parent_bg)
-        self.after(200, self.check_parent_bg)
+    def enable_buttons(self):
+        for button in self.buttons.values():
+            button.config(state="normal")
