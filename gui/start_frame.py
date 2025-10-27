@@ -47,7 +47,17 @@ class StartFrame(Frame):
             self.load_game_button.pack(pady=10)
 
     def load_existing_game(self):
-        print("Charger partie cliquée!")
+        loaded_player = SaveManager.load_player()
+
+        if loaded_player is None:
+            print("Erreur lors du chargement de la sauvegarde!")
+            return
+
+        root = self.winfo_toplevel()
+        root.destroy()
+
+        main_window = MainWindow(loaded_player)
+        main_window.run()
 
     def start_new_game(self):
         self.new_game_button.pack_forget()

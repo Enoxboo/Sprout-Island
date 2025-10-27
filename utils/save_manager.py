@@ -59,3 +59,24 @@ class SaveManager:
     @staticmethod
     def save_exists():
         return os.path.exists(SAVE_FILE)
+
+    @staticmethod
+    def load_player():
+        if not SaveManager.save_exists():
+            return None
+
+        try:
+            with open(SAVE_FILE, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+
+            player_data = data['player']
+
+            from models.player import Player
+            player = Player(player_data['name'])
+            player.satiety = player_data['satiety']
+            player.hydration = player_data['hydration']
+            player.energy = player_data['energy']
+
+            return player
+        except (FileNotFoundError, json.JSONDecodeError, KeyError):
+            return None
