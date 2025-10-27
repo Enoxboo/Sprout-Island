@@ -1,4 +1,4 @@
-from tkinter import Frame, Label, Button
+from tkinter import Frame, Label, Button, Entry
 
 from utils.save_manager import SaveManager
 
@@ -49,4 +49,39 @@ class StartFrame(Frame):
         print("Charger partie cliquée!")
 
     def start_new_game(self):
-        pass
+        self.new_game_button.pack_forget()
+        if self.has_save:
+            self.load_game_button.pack_forget()
+
+        self.name_label = Label(
+            self,
+            text="Entrez votre nom :",
+            font=("Arial", 18),
+            background="#2cdf85",
+            foreground="white"
+        )
+        self.name_label.pack(pady=20)
+
+        self.name_entry = Entry(
+            self,
+            font=("Arial", 16),
+            width=20
+        )
+        self.name_entry.pack(pady=10)
+        self.name_entry.focus()
+
+        self.confirm_button = Button(
+            self,
+            text="Valider",
+            font=("Arial", 16),
+            background="#4a90e2",
+            foreground="white",
+            padx=20,
+            pady=10,
+            command=self.create_new_player
+        )
+        self.confirm_button.pack(pady=10)
+
+    def create_new_player(self):
+        player_name = self.name_entry.get()
+        print(f"Nom saisi : {player_name}")
