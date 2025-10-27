@@ -97,13 +97,22 @@ class StartFrame(Frame):
         player_name = self.name_entry.get().strip()
 
         if not player_name:
-            print("Le nom ne peut pas être vide!")
+            if not hasattr(self, 'error_label'):
+                self.error_label = Label(
+                    self,
+                    text="⚠️ Le nom ne peut pas être vide!",
+                    font=("Arial", 12),
+                    background="#2cdf85",
+                    foreground="#ff4444"
+                )
+                self.error_label.pack(pady=5)
             return
 
-        new_player = Player(player_name)
+        if hasattr(self, 'error_label'):
+            self.error_label.destroy()
 
+        new_player = Player(player_name)
         root = self.winfo_toplevel()
         root.destroy()
-
         main_window = MainWindow(new_player)
         main_window.run()
