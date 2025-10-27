@@ -18,7 +18,7 @@ class MainWindow:
         project_root = os.path.dirname(script_dir)
         ico_path = os.path.join(project_root, "src", "teemo_basic.ico")
         self.main_window.iconbitmap(ico_path)
-        self.main_window.config(background="#2cdf85")
+        self.main_window.config(background="#F5E6D3")
 
         self.player = player
         self.game_manager = game_manager if game_manager else GameManager()
