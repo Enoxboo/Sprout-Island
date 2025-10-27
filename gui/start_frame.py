@@ -1,7 +1,8 @@
 from tkinter import Frame, Label, Button, Entry
 
 from utils.save_manager import SaveManager
-
+from models.player import Player
+from gui.main_window import MainWindow
 
 class StartFrame(Frame):
     def __init__(self, parent):
@@ -83,5 +84,16 @@ class StartFrame(Frame):
         self.confirm_button.pack(pady=10)
 
     def create_new_player(self):
-        player_name = self.name_entry.get()
-        print(f"Nom saisi : {player_name}")
+        player_name = self.name_entry.get().strip()
+
+        if not player_name:
+            print("Le nom ne peut pas être vide!")
+            return
+
+        new_player = Player(player_name)
+
+        root = self.winfo_toplevel()
+        root.destroy()
+
+        main_window = MainWindow(new_player)
+        main_window.run()
