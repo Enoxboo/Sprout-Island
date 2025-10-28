@@ -34,31 +34,34 @@ class MainWindow:
 
         self.main_window.protocol("WM_DELETE_WINDOW", self.on_closing)
 
+    def run(self):
+        self.main_window.mainloop()
+
+    def on_closing(self):
+        self.main_window.destroy()
+
     def handle_action(self, action):
         if action == "quit":
             self.main_window.quit()
             return
 
         if action in self.player.actions:
-            self.player.do_action(action)
+            result = self.player.do_action(action)
+
             self.game_manager.increment_day()
             self.status_frame.update_from_player()
 
             SaveManager.save_game(self.player, self.game_manager)
 
-            if self.game_manager.check_loss_condition(self.player):
-                self.dialogue_frame.update_text("Game Over - Vous n'avez pas survécu...")
+            if action == "explore" and result:
+                self.dialogue_frame.update_text(result["message"])
+            elif self.game_manager.check_loss_condition(self.player):
+                self.dialogue_frame.update_text("💀 Game Over - Vous n'avez pas survécu...")
                 SaveManager.delete_save()
                 self.buttons_frame.disable_buttons()
             elif self.game_manager.check_win_condition():
-                self.dialogue_frame.update_text(f"Victoire! Vous avez survécu {self.game_manager.get_days()} jours!")
+                self.dialogue_frame.update_text(f"🎉 Victoire! Vous avez survécu {self.game_manager.get_days()} jours!")
                 SaveManager.delete_save()
                 self.buttons_frame.disable_buttons()
             else:
-                self.dialogue_frame.update_text(f"Jour {self.game_manager.get_days()} - Que voulez-vous faire?")
-
-    def on_closing(self):
-        self.main_window.destroy()
-
-    def run(self):
-        self.main_window.mainloop()
+                self.dialogue_frame.update_text(f"☀️ Jour {self.game_manager.get_days()} - Que voulez-vous faire?")

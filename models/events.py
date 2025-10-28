@@ -17,7 +17,6 @@ class EventManager:
 
     def trigger_random_event(self, player):
         return {
-            "success": True,
-            "message": "Vous explorez les environs...",
+            "message": "🌴 Vous explorez les environs de l'île...\nRien de particulier à signaler pour le moment.",
             "type": "neutral"
         }
