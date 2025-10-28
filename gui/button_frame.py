@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import Frame
+from gui.shapes import create_rounded_rect
 
 
 class StyledButton(tk.Canvas):
@@ -20,13 +21,13 @@ class StyledButton(tk.Canvas):
         self.is_disabled = False
         self.corner_radius = 12
 
-        self.shadow = self._create_rounded_rect(
-            4, 4, width - 4, height - 4,
+        self.shadow = create_rounded_rect(
+            self, 4, 4, width - 4, height - 4,
             self.corner_radius, fill="#D4C5B3", outline=""
         )
 
-        self.button_bg = self._create_rounded_rect(
-            2, 2, width - 2, height - 2,
+        self.button_bg = create_rounded_rect(
+            self, 2, 2, width - 2, height - 2,
             self.corner_radius, fill=bg_color, outline=""
         )
 
@@ -41,34 +42,17 @@ class StyledButton(tk.Canvas):
         self.bind("<Leave>", self._on_leave)
         self.bind("<Button-1>", self._on_click)
 
-    def _create_rounded_rect(self, x1, y1, x2, y2, radius, **kwargs):
-        points = [
-            x1 + radius, y1,
-            x2 - radius, y1,
-            x2, y1,
-            x2, y1 + radius,
-            x2, y2 - radius,
-            x2, y2,
-            x2 - radius, y2,
-            x1 + radius, y2,
-            x1, y2,
-            x1, y2 - radius,
-            x1, y1 + radius,
-            x1, y1
-        ]
-        return self.create_polygon(points, smooth=True, **kwargs)
-
     def _on_enter(self, event):
         if not self.is_disabled:
             self.itemconfig(self.button_bg, fill=self.hover_color)
             self.delete(self.shadow)
             self.delete(self.button_bg)
-            self.shadow = self._create_rounded_rect(
-                3, 3, self.winfo_width() - 3, self.winfo_height() - 3,
+            self.shadow = create_rounded_rect(
+                self, 3, 3, self.winfo_width() - 3, self.winfo_height() - 3,
                 self.corner_radius, fill="#D4C5B3", outline=""
             )
-            self.button_bg = self._create_rounded_rect(
-                1, 1, self.winfo_width() - 1, self.winfo_height() - 1,
+            self.button_bg = create_rounded_rect(
+                self, 1, 1, self.winfo_width() - 1, self.winfo_height() - 1,
                 self.corner_radius, fill=self.hover_color, outline=""
             )
             self.tag_raise(self.text_item)
@@ -79,12 +63,12 @@ class StyledButton(tk.Canvas):
             self.itemconfig(self.button_bg, fill=self.bg_color)
             self.delete(self.shadow)
             self.delete(self.button_bg)
-            self.shadow = self._create_rounded_rect(
-                4, 4, self.winfo_width() - 4, self.winfo_height() - 4,
+            self.shadow = create_rounded_rect(
+                self, 4, 4, self.winfo_width() - 4, self.winfo_height() - 4,
                 self.corner_radius, fill="#D4C5B3", outline=""
             )
-            self.button_bg = self._create_rounded_rect(
-                2, 2, self.winfo_width() - 2, self.winfo_height() - 2,
+            self.button_bg = create_rounded_rect(
+                self, 2, 2, self.winfo_width() - 2, self.winfo_height() - 2,
                 self.corner_radius, fill=self.bg_color, outline=""
             )
             self.tag_raise(self.text_item)
@@ -94,12 +78,12 @@ class StyledButton(tk.Canvas):
         if not self.is_disabled and self.command:
             self.delete(self.shadow)
             self.delete(self.button_bg)
-            self.shadow = self._create_rounded_rect(
-                4, 4, self.winfo_width() - 4, self.winfo_height() - 4,
+            self.shadow = create_rounded_rect(
+                self, 4, 4, self.winfo_width() - 4, self.winfo_height() - 4,
                 self.corner_radius, fill="#D4C5B3", outline=""
             )
-            self.button_bg = self._create_rounded_rect(
-                3, 3, self.winfo_width() - 3, self.winfo_height() - 3,
+            self.button_bg = create_rounded_rect(
+                self, 3, 3, self.winfo_width() - 3, self.winfo_height() - 3,
                 self.corner_radius, fill=self.hover_color, outline=""
             )
             self.tag_raise(self.text_item)
@@ -107,12 +91,12 @@ class StyledButton(tk.Canvas):
             def reset():
                 self.delete(self.shadow)
                 self.delete(self.button_bg)
-                self.shadow = self._create_rounded_rect(
-                    4, 4, self.winfo_width() - 4, self.winfo_height() - 4,
+                self.shadow = create_rounded_rect(
+                    self, 4, 4, self.winfo_width() - 4, self.winfo_height() - 4,
                     self.corner_radius, fill="#D4C5B3", outline=""
                 )
-                self.button_bg = self._create_rounded_rect(
-                    2, 2, self.winfo_width() - 2, self.winfo_height() - 2,
+                self.button_bg = create_rounded_rect(
+                    self, 2, 2, self.winfo_width() - 2, self.winfo_height() - 2,
                     self.corner_radius, fill=self.bg_color, outline=""
                 )
                 self.tag_raise(self.text_item)
@@ -123,8 +107,8 @@ class StyledButton(tk.Canvas):
     def disable(self):
         self.is_disabled = True
         self.delete(self.button_bg)
-        self.button_bg = self._create_rounded_rect(
-            2, 2, self.winfo_width() - 2, self.winfo_height() - 2,
+        self.button_bg = create_rounded_rect(
+            self, 2, 2, self.winfo_width() - 2, self.winfo_height() - 2,
             self.corner_radius, fill="#CCCCCC", outline=""
         )
         self.itemconfig(self.text_item, fill="#999999")
@@ -134,8 +118,8 @@ class StyledButton(tk.Canvas):
     def enable(self):
         self.is_disabled = False
         self.delete(self.button_bg)
-        self.button_bg = self._create_rounded_rect(
-            2, 2, self.winfo_width() - 2, self.winfo_height() - 2,
+        self.button_bg = create_rounded_rect(
+            self, 2, 2, self.winfo_width() - 2, self.winfo_height() - 2,
             self.corner_radius, fill=self.bg_color, outline=""
         )
         self.itemconfig(self.text_item, fill="#FFFFFF")
@@ -234,6 +218,3 @@ class ButtonsFrame(Frame):
     def on_choice_click(self, choice):
         if self.action_callback:
             self.action_callback(choice)
-
-    def set_action_callback(self, callback):
-        self.action_callback = callback

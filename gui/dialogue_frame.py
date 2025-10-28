@@ -1,4 +1,5 @@
 from tkinter import Frame, Canvas, Label
+from gui.shapes import create_rounded_rect
 
 
 class DialogueFrame(Frame):
@@ -31,23 +32,6 @@ class DialogueFrame(Frame):
         self.canvas.bind("<Configure>", self._redraw_bubble)
         self.after(10, self._redraw_bubble)
 
-    def _create_rounded_rect(self, x1, y1, x2, y2, radius, **kwargs):
-        points = [
-            x1 + radius, y1,
-            x2 - radius, y1,
-            x2, y1,
-            x2, y1 + radius,
-            x2, y2 - radius,
-            x2, y2,
-            x2 - radius, y2,
-            x1 + radius, y2,
-            x1, y2,
-            x1, y2 - radius,
-            x1, y1 + radius,
-            x1, y1
-        ]
-        return self.canvas.create_polygon(points, smooth=True, **kwargs)
-
     def _redraw_bubble(self, event=None):
         self.canvas.delete("all")
 
@@ -65,18 +49,21 @@ class DialogueFrame(Frame):
         bubble_y2 = height - margin
         radius = 20
 
-        self._create_rounded_rect(
+        create_rounded_rect(
+            self.canvas,
             bubble_x1 + 3, bubble_y1 + 3,
             bubble_x2 + 3, bubble_y2 + 3,
             radius, fill="#D4C5B3", outline=""
         )
 
-        self._create_rounded_rect(
+        create_rounded_rect(
+            self.canvas,
             bubble_x1, bubble_y1, bubble_x2, bubble_y2,
             radius, fill="#FFFFFF", outline=""
         )
 
-        self._create_rounded_rect(
+        create_rounded_rect(
+            self.canvas,
             bubble_x1, bubble_y1, bubble_x2, bubble_y2,
             radius, fill="", outline="#D4C5B3", width=2
         )
