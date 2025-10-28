@@ -36,7 +36,6 @@ class MainWindow:
 
     def handle_action(self, action):
         if action == "quit":
-            SaveManager.save_game(self.player, self.game_manager)
             self.main_window.quit()
             return
 
@@ -59,7 +58,6 @@ class MainWindow:
                 self.dialogue_frame.update_text(f"Jour {self.game_manager.get_days()} - Que voulez-vous faire?")
 
     def on_closing(self):
-        SaveManager.save_game(self.player, self.game_manager)
         self.main_window.destroy()
 
     def run(self):
