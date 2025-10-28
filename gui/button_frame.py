@@ -187,3 +187,53 @@ class ButtonsFrame(Frame):
     def enable_buttons(self):
         for button in self.buttons.values():
             button.enable()
+
+    def show_choice_buttons(self, choices):
+        for button in self.buttons.values():
+            button.pack_forget()
+
+        choice_config = {
+            "flee": ("Fuir", "#FFB6A3", "#EFA693"),
+            "hunt": ("Chasser", "#8FBC8F", "#7AAC7A")
+        }
+
+        button_container = None
+        for child in self.winfo_children():
+            if isinstance(child, Frame):
+                button_container = child
+                break
+
+        if button_container is None:
+            button_container = Frame(self, bg="#F5E6D3")
+            button_container.pack(expand=True)
+
+        for choice in choices:
+            if choice in choice_config:
+                text, bg_color, hover_color = choice_config[choice]
+                btn = StyledButton(
+                    button_container,
+                    text=text,
+                    command=lambda c=choice: self.on_choice_click(c),
+                    bg_color=bg_color,
+                    hover_color=hover_color
+                )
+                btn.pack(side="left", padx=8)
+                self.buttons[f"choice_{choice}"] = btn
+
+    def hide_choice_buttons(self):
+        for key in list(self.buttons.keys()):
+            if key.startswith("choice_"):
+                self.buttons[key].destroy()
+                del self.buttons[key]
+
+        actions_order = ["fish", "drink", "sleep", "explore", "quit"]
+        for action in actions_order:
+            if action in self.buttons:
+                self.buttons[action].pack(side="left", padx=8)
+
+    def on_choice_click(self, choice):
+        if self.action_callback:
+            self.action_callback(choice)
+
+    def set_action_callback(self, callback):
+        self.action_callback = callback

@@ -36,14 +36,12 @@ class Player:
         self.hydration = clamp(self.hydration - HYDRATION_LOSS, HYDRATION_MIN, HYDRATION_MAX)
 
     def _explore(self):
-        from models.events import EventManager
-
-        event_manager = EventManager()
-        result = event_manager.trigger_random_event(self)
+        from config import ENERGY_LOSS, ENERGY_MIN
+        from utils.helpers import clamp
 
         self.energy = clamp(self.energy - ENERGY_LOSS, ENERGY_MIN, ENERGY_MAX)
 
-        return result
+        return None
 
     def do_action(self, action_name):
         action = self.actions.get(action_name)
