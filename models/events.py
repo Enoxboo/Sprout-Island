@@ -40,13 +40,43 @@ class RainEvent(Event):
             "type": "positive"
         }
 
+class AnimalEncounterEvent(Event):
+    def __init__(self):
+        super().__init__(
+            "Rencontre dangereuse",
+            "Un animal sauvage vous attaque!"
+        )
+
+    def trigger(self, player):
+        from config import ENERGY_LOSS, ENERGY_MIN
+        from utils.helpers import clamp
+
+        old_energy = player.energy
+        damage = ENERGY_LOSS * 2
+        player.energy = clamp(
+            player.energy - damage,
+            ENERGY_MIN,
+            player.energy
+        )
+        loss = old_energy - player.energy
+
+        return {
+            "message": (
+                f"🐗 {self.description}\n\n"
+                f"Vous réussissez à le repousser mais vous êtes épuisé.\n"
+                f"⚡ Énergie -{loss}"
+            ),
+            "type": "negative"
+        }
+
 
 class EventManager:
     def __init__(self):
         self.events = [
             (RainEvent(), 30),
+            (AnimalEncounterEvent(), 20),
         ]
-        self.no_event_chance = 70
+        self.no_event_chance = 50
 
     def trigger_random_event(self, player):
         total_weight = sum(weight for _, weight in self.events) + self.no_event_chance
