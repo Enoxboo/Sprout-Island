@@ -49,13 +49,12 @@ class MainWindow:
             result = self.player.do_action(action)
 
             self.game_manager.increment_day()
+
             self.status_frame.update_from_player()
 
             SaveManager.save_game(self.player, self.game_manager)
 
-            if action == "explore" and result:
-                self.dialogue_frame.update_text(result["message"])
-            elif self.game_manager.check_loss_condition(self.player):
+            if self.game_manager.check_loss_condition(self.player):
                 self.dialogue_frame.update_text("💀 Game Over - Vous n'avez pas survécu...")
                 SaveManager.delete_save()
                 self.buttons_frame.disable_buttons()
@@ -63,5 +62,7 @@ class MainWindow:
                 self.dialogue_frame.update_text(f"🎉 Victoire! Vous avez survécu {self.game_manager.get_days()} jours!")
                 SaveManager.delete_save()
                 self.buttons_frame.disable_buttons()
+            elif action == "explore" and result:
+                self.dialogue_frame.update_text(result["message"])
             else:
                 self.dialogue_frame.update_text(f"☀️ Jour {self.game_manager.get_days()} - Que voulez-vous faire?")
