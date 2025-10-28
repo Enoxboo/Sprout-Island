@@ -1,51 +1,116 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import Canvas
 
 
 class StatusFrame(tk.Frame):
     def __init__(self, parent, player, **kwargs):
         super().__init__(parent, **kwargs)
-        self.configure(bg="#2cdf85", padx=10, pady=10)
+        self.configure(bg="#F5E6D3", padx=20, pady=15)
         self.energy_var = tk.DoubleVar(value=player.energy)
         self.satiety_var = tk.DoubleVar(value=player.satiety)
         self.hydration_var = tk.DoubleVar(value=player.hydration)
         self.player = player
         self._create_widgets()
 
-    def _create_stat_bar(self, name, variable, color):
-        frame = tk.Frame(self, bg="#2cdf85")
-        frame.pack(fill="x", pady=5)
+    def _create_stat_bar(self, icon, name, variable, color):
+        frame = tk.Frame(self, bg="#F5E6D3")
+        frame.pack(fill="x", pady=8)
 
-        label = tk.Label(frame, text=name, width=8, anchor="w", bg="#333333", fg="white")
-        label.pack(side="left", padx=(0, 5))
+        label_text = f"{icon} {name}"
+        label = tk.Label(
+            frame,
+            text=label_text,
+            font=("Segoe UI", 12, "bold"),
+            width=12,
+            anchor="w",
+            bg="#F5E6D3",
+            fg="#3E2723"
+        )
+        label.pack(side="left", padx=(0, 10))
 
-        progress = ttk.Progressbar(frame, variable=variable, maximum=100, length=200)
-        progress.pack(side="left", fill="x", expand=True)
+        bar_container = tk.Frame(frame, bg="#F5E6D3")
+        bar_container.pack(side="left", fill="x", expand=True)
 
-        style_name = f"{name.lower()}.Horizontal.TProgressbar"
-        style = ttk.Style()
-        style.configure(style_name, background=color, troughcolor="#666666")
-        progress.configure(style=style_name)
+        canvas = Canvas(
+            bar_container,
+            height=28,
+            bg="#F5E6D3",
+            highlightthickness=0,
+            bd=0
+        )
+        canvas.pack(fill="x", expand=True)
 
-        value_label = tk.Label(frame, bg="#333333", fg="white", width=5)
+        value_label = tk.Label(
+            frame,
+            bg="#F5E6D3",
+            fg="#3E2723",
+            font=("Segoe UI", 11, "bold"),
+            width=6
+        )
+        value_label.pack(side="right", padx=(10, 0))
 
-        def update_label(*args):
+        def update_bar(*args):
+            canvas.delete("all")
+            width = canvas.winfo_width()
+            height = canvas.winfo_height()
+
+            if width <= 1:
+                canvas.after(10, update_bar)
+                return
+
+            radius = 10
+            canvas.create_rectangle(
+                0, 0, width, height,
+                fill="#D4C5B3", outline="", tags="bg"
+            )
+
+            progress_width = int((variable.get() / 100) * width)
+            if progress_width > 0:
+                self._create_rounded_rect(
+                    canvas, 2, 2, progress_width - 2, height - 2,
+                    radius, fill=color, outline=""
+                )
+
             value_label.config(text=f"{variable.get():.0f}%")
 
-        variable.trace_add("write", update_label)
-        update_label()
-        value_label.pack(side="right")
+        variable.trace_add("write", update_bar)
 
-        return progress
+        canvas.bind("<Configure>", update_bar)
+
+        canvas.after(10, update_bar)
+
+        return canvas
+
+    def _create_rounded_rect(self, canvas, x1, y1, x2, y2, radius, **kwargs):
+        points = [
+            x1 + radius, y1,
+            x2 - radius, y1,
+            x2, y1,
+            x2, y1 + radius,
+            x2, y2 - radius,
+            x2, y2,
+            x2 - radius, y2,
+            x1 + radius, y2,
+            x1, y2,
+            x1, y2 - radius,
+            x1, y1 + radius,
+            x1, y1
+        ]
+        return canvas.create_polygon(points, smooth=True, **kwargs)
 
     def _create_widgets(self):
-        title_label = tk.Label(self, text="STATUT DU JOUEUR", font=("Arial", 12, "bold"),
-                               bg="#333333", fg="white")
-        title_label.pack(pady=(0, 10))
+        title_label = tk.Label(
+            self,
+            text="📊 Statut du Joueur",
+            font=("Segoe UI", 14, "bold"),
+            bg="#F5E6D3",
+            fg="#3E2723"
+        )
+        title_label.pack(pady=(0, 15))
 
-        self._create_stat_bar("ENERGY", self.energy_var, "#4CAF50")
-        self._create_stat_bar("SATIÉTÉ", self.satiety_var, "#FF9800")
-        self._create_stat_bar("SOIF", self.hydration_var, "#2196F3")
+        self._create_stat_bar("⚡", "Énergie", self.energy_var, "#8FBC8F")
+        self._create_stat_bar("🍖", "Satiété", self.satiety_var, "#FFB6A3")
+        self._create_stat_bar("💧", "Hydration", self.hydration_var, "#7FB3D5")
 
     def update_from_player(self):
         self.energy_var.set(self.player.energy)
