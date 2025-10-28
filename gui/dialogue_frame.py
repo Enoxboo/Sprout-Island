@@ -1,58 +1,90 @@
-import os
-from tkinter import Frame, Label
-from PIL import Image, ImageTk
+from tkinter import Frame, Canvas, Label
 
 
 class DialogueFrame(Frame):
     def __init__(self, parent):
         super().__init__(parent, bg="#F5E6D3")
         self.parent = parent
-        self.config(width=100, height=200)
-        self.pack(side="bottom", fill="x")
+        self.pack(side="bottom", fill="x", padx=20, pady=20)
 
-        dir = os.path.dirname(__file__)
-        root = os.path.dirname(dir)
-        src = os.path.join(root, "src", "dialogue_box.png")
-
-        if os.path.exists(src):
-            self.original_image = Image.open(src)
-            self.bg_photo = ImageTk.PhotoImage(self.original_image)
-            self.bg_label = Label(self, image=self.bg_photo, background="#F5E6D3")
-            self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
-            self.bind("<Configure>", self.resize_background)
-        else:
-            self.bg_label = Label(self, background="#E8D5C4")
-            self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
-            self.original_image = None
+        self.canvas = Canvas(
+            self,
+            height=120,
+            bg="#F5E6D3",
+            highlightthickness=0,
+            bd=0
+        )
+        self.canvas.pack(fill="x", expand=True)
 
         self.label = Label(
-            self,
+            self.canvas,
             text="",
-            bg='#E8D5C4',
+            bg="#FFFFFF",
             fg="#3E2723",
-            font=("Segoe UI", 16),
-            wraplength=800,
-            justify="center"
+            font=("Segoe UI", 14),
+            wraplength=900,
+            justify="center",
+            padx=30,
+            pady=20
         )
-        self.label.place(relx=0.5, rely=0.5, anchor="center")
 
-    def resize_background(self, event):
-        if self.original_image:
-            width = event.width
-            height = event.height
-            resized_image = self.original_image.resize((width, height), Image.LANCZOS)
-            self.bg_photo = ImageTk.PhotoImage(resized_image)
-            self.bg_label.config(image=self.bg_photo)
+        self.canvas.bind("<Configure>", self._redraw_bubble)
+        self.after(10, self._redraw_bubble)
 
-    def check_parent_bg(self):
-        parent_bg = self.parent.cget("background")
-        current_bg = self.cget("background")
-        if parent_bg != current_bg:
-            self.config(bg=parent_bg)
-            if not self.original_image:
-                self.bg_label.config(bg="#E8D5C4")
+    def _create_rounded_rect(self, x1, y1, x2, y2, radius, **kwargs):
+        points = [
+            x1 + radius, y1,
+            x2 - radius, y1,
+            x2, y1,
+            x2, y1 + radius,
+            x2, y2 - radius,
+            x2, y2,
+            x2 - radius, y2,
+            x1 + radius, y2,
+            x1, y2,
+            x1, y2 - radius,
+            x1, y1 + radius,
+            x1, y1
+        ]
+        return self.canvas.create_polygon(points, smooth=True, **kwargs)
 
-        self.after(200, self.check_parent_bg)
+    def _redraw_bubble(self, event=None):
+        self.canvas.delete("all")
+
+        width = self.canvas.winfo_width()
+        height = self.canvas.winfo_height()
+
+        if width <= 1:
+            self.canvas.after(10, self._redraw_bubble)
+            return
+
+        margin = 10
+        bubble_x1 = margin
+        bubble_y1 = margin
+        bubble_x2 = width - margin
+        bubble_y2 = height - margin
+        radius = 20
+
+        self._create_rounded_rect(
+            bubble_x1 + 3, bubble_y1 + 3,
+            bubble_x2 + 3, bubble_y2 + 3,
+            radius, fill="#D4C5B3", outline=""
+        )
+
+        self._create_rounded_rect(
+            bubble_x1, bubble_y1, bubble_x2, bubble_y2,
+            radius, fill="#FFFFFF", outline=""
+        )
+
+        self._create_rounded_rect(
+            bubble_x1, bubble_y1, bubble_x2, bubble_y2,
+            radius, fill="", outline="#D4C5B3", width=2
+        )
+
+        self.label.place(
+            relx=0.5, rely=0.5, anchor="center",
+            width=width - 60
+        )
 
     def update_text(self, new_text):
         self.label.config(text=new_text)
