@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import Canvas
+from gui.shapes import create_rounded_rect
 
 
 class StatusFrame(tk.Frame):
@@ -66,7 +67,7 @@ class StatusFrame(tk.Frame):
 
             progress_width = int((variable.get() / 100) * width)
             if progress_width > 0:
-                self._create_rounded_rect(
+                create_rounded_rect(
                     canvas, 2, 2, progress_width - 2, height - 2,
                     radius, fill=color, outline=""
                 )
@@ -80,23 +81,6 @@ class StatusFrame(tk.Frame):
         canvas.after(10, update_bar)
 
         return canvas
-
-    def _create_rounded_rect(self, canvas, x1, y1, x2, y2, radius, **kwargs):
-        points = [
-            x1 + radius, y1,
-            x2 - radius, y1,
-            x2, y1,
-            x2, y1 + radius,
-            x2, y2 - radius,
-            x2, y2,
-            x2 - radius, y2,
-            x1 + radius, y2,
-            x1, y2,
-            x1, y2 - radius,
-            x1, y1 + radius,
-            x1, y1
-        ]
-        return canvas.create_polygon(points, smooth=True, **kwargs)
 
     def _create_widgets(self):
         title_label = tk.Label(

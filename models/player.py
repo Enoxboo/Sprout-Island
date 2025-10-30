@@ -36,14 +36,19 @@ class Player:
         self.hydration = clamp(self.hydration - HYDRATION_LOSS, HYDRATION_MIN, HYDRATION_MAX)
 
     def _explore(self):
-        pass
+        from config import ENERGY_LOSS, ENERGY_MIN
+        from utils.helpers import clamp
+
+        self.energy = clamp(self.energy - ENERGY_LOSS, ENERGY_MIN, ENERGY_MAX)
+
+        return None
 
     def do_action(self, action_name):
         action = self.actions.get(action_name)
         if action:
-            action()
-            return True
-        return False
+            result = action()
+            return result
+        return None
 
     def status(self):
         print(f"Player status: {self.name}. {self.satiety}. {self.hydration}. {self.energy}.")
