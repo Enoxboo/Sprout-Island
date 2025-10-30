@@ -17,6 +17,11 @@ class GameManager:
             return True
         return False
 
+    def apply_new_day_penalties(self, player):
+        """Applique les pertes quotidiennes au début d'un nouveau jour."""
+        if self.days > 0:
+            player.apply_daily_losses()
+
     def is_game_over(self):
         return self.game_over
 
