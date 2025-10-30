@@ -1,6 +1,8 @@
 """Événements de découverte de ressources."""
+from config import (FRUIT_SATIETY_GAIN, FRUIT_HYDRATION_GAIN,
+                    SATIETY_MAX, HYDRATION_MAX)
 from models.events.base import Event
-
+from utils.helpers import clamp
 
 class FindFruitEvent(Event):
     def __init__(self):
@@ -10,9 +12,6 @@ class FindFruitEvent(Event):
         )
 
     def trigger(self, player):
-        from config import FRUIT_SATIETY_GAIN, FRUIT_HYDRATION_GAIN, SATIETY_MAX, HYDRATION_MAX
-        from utils.helpers import clamp
-
         old_satiety = player.satiety
         old_hydration = player.hydration
 

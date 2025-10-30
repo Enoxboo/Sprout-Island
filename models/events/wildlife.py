@@ -1,6 +1,8 @@
 """Événements liés à la faune."""
+from config import (ANIMAL_FLEE_ENERGY_LOSS, ANIMAL_HUNT_ENERGY_LOSS,
+                    ANIMAL_HUNT_SATIETY_GAIN, SATIETY_MAX, ENERGY_MIN, ENERGY_MAX)
 from models.events.base import Event
-
+from utils.helpers import clamp
 
 class AnimalEncounterEvent(Event):
     def __init__(self):
@@ -21,10 +23,6 @@ class AnimalEncounterEvent(Event):
         }
 
     def handle_choice(self, player, choice):
-        from config import (ANIMAL_FLEE_ENERGY_LOSS, ANIMAL_HUNT_ENERGY_LOSS,
-                            ANIMAL_HUNT_SATIETY_GAIN, SATIETY_MAX, ENERGY_MIN)
-        from utils.helpers import clamp
-
         if choice == "flee":
             old_energy = player.energy
             player.energy = clamp(
@@ -50,7 +48,7 @@ class AnimalEncounterEvent(Event):
             player.energy = clamp(
                 player.energy - ANIMAL_HUNT_ENERGY_LOSS,
                 ENERGY_MIN,
-                player.energy
+                ENERGY_MAX
             )
             player.satiety = clamp(
                 player.satiety + ANIMAL_HUNT_SATIETY_GAIN,

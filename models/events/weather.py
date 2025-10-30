@@ -1,6 +1,9 @@
 """Événements météorologiques (pluie, canicule)."""
-from config import HYDRATION_MAX, ENERGY_MAX
+from config import (ENERGY_MAX, HEATWAVE_HYDRATION_LOSS, HEATWAVE_ENERGY_LOSS,
+                    HEATWAVE_DURATION, HYDRATION_MIN, ENERGY_MIN, RAIN_HYDRATION_GAIN,
+                    RAIN_DURATION, HYDRATION_MAX)
 from models.events.base import Event
+from utils.helpers import clamp
 
 
 class RainEvent(Event):
@@ -11,9 +14,6 @@ class RainEvent(Event):
         )
 
     def trigger(self, player):
-        from config import RAIN_HYDRATION_GAIN, RAIN_DURATION, HYDRATION_MAX
-        from utils.helpers import clamp
-
         old_hydration = player.hydration
         player.hydration = clamp(
             player.hydration + RAIN_HYDRATION_GAIN,
@@ -42,9 +42,6 @@ class HeatwaveEvent(Event):
         )
 
     def trigger(self, player):
-        from config import HEATWAVE_HYDRATION_LOSS, HEATWAVE_ENERGY_LOSS, HEATWAVE_DURATION, HYDRATION_MIN, ENERGY_MIN
-        from utils.helpers import clamp
-
         old_hydration = player.hydration
         old_energy = player.energy
 

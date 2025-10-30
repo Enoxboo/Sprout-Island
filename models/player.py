@@ -51,7 +51,6 @@ class Player:
     def _sleep(self):
         """Dormir : récupère de l'énergie. Les pertes quotidiennes ne sont PAS appliquées après cette action."""
         self.energy = clamp(self.energy + SLEEP_ENERGY_GAIN, ENERGY_MIN, ENERGY_MAX)
-        # Important : pas de pertes ici, elles seront gérées différemment dans game_manager
 
     def _explore(self):
         """Explorer l'île : coûte de l'énergie, peut déclencher des événements."""
