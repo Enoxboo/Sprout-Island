@@ -24,7 +24,7 @@ class RainEvent(Event):
         )
 
     def trigger(self, player):
-        from config import RAIN_HYDRATION_GAIN, HYDRATION_MAX
+        from config import RAIN_HYDRATION_GAIN, RAIN_DURATION, HYDRATION_MAX
         from utils.helpers import clamp
 
         old_hydration = player.hydration
@@ -35,11 +35,14 @@ class RainEvent(Event):
         )
         gain = player.hydration - old_hydration
 
+        player.rain_effect_days = RAIN_DURATION
+
         return {
             "message": (
                 f"☔ {self.description}\n\n"
                 f"Vous collectez de l'eau fraîche dans vos mains.\n"
-                f"💧 Hydratation +{gain}"
+                f"💧 Hydratation +{gain}\n"
+                f"🌧️ Pluie continue pendant {RAIN_DURATION} jours (pas de perte d'hydratation quotidienne)"
             ),
             "type": "positive"
         }
@@ -132,6 +135,7 @@ class AnimalEncounterEvent(Event):
             "type": "neutral"
         }
 
+
 class FindFruitEvent(Event):
     """Événement de découverte de fruits comestibles."""
 
@@ -172,6 +176,7 @@ class FindFruitEvent(Event):
             "type": "positive"
         }
 
+
 class HeatwaveEvent(Event):
     """Événement de canicule causant déshydratation et fatigue."""
 
@@ -182,7 +187,7 @@ class HeatwaveEvent(Event):
         )
 
     def trigger(self, player):
-        from config import HEATWAVE_HYDRATION_LOSS, HEATWAVE_ENERGY_LOSS, HYDRATION_MIN, ENERGY_MIN
+        from config import HEATWAVE_HYDRATION_LOSS, HEATWAVE_ENERGY_LOSS, HEATWAVE_DURATION, HYDRATION_MIN, ENERGY_MIN
         from utils.helpers import clamp
 
         old_hydration = player.hydration
@@ -202,15 +207,19 @@ class HeatwaveEvent(Event):
         actual_hydration_loss = old_hydration - player.hydration
         actual_energy_loss = old_energy - player.energy
 
+        player.heatwave_effect_days = HEATWAVE_DURATION
+
         return {
             "message": (
                 f"🌡️ {self.description}\n\n"
                 f"Le soleil brûlant vous épuise rapidement.\n"
                 f"💧 Hydratation -{actual_hydration_loss}\n"
-                f"⚡ Énergie -{actual_energy_loss}"
+                f"⚡ Énergie -{actual_energy_loss}\n"
+                f"☀️ Canicule continue pendant {HEATWAVE_DURATION} jours (-10 hydratation/jour)"
             ),
             "type": "negative"
         }
+
 
 class EventManager:
     """Gère le déclenchement aléatoire des événements selon leurs probabilités."""

@@ -11,7 +11,7 @@ class DialogueFrame(Frame):
 
         self.canvas = Canvas(
             self,
-            height=200,
+            height=250,
             bg="#F5E6D3",
             highlightthickness=0,
             bd=0

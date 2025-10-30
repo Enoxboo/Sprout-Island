@@ -98,10 +98,35 @@ class StatusFrame(tk.Frame):
         self._create_stat_bar("⚡", "Énergie", self.energy_var, "#8FBC8F")
         self._create_stat_bar("🍖", "Satiété", self.satiety_var, "#FFB6A3")
         self._create_stat_bar("💧", "Hydration", self.hydration_var, "#7FB3D5")
+        self._create_weather_indicator()
+
+    def _create_weather_indicator(self):
+        """Crée un indicateur pour les effets météo actifs."""
+        self.weather_frame = tk.Frame(self, bg="#F5E6D3")
+        self.weather_frame.pack(fill="x", pady=(15, 0))
+
+        self.weather_label = tk.Label(
+            self.weather_frame,
+            text="",
+            font=("Segoe UI", 11, "bold"),
+            bg="#F5E6D3",
+            fg="#3E2723",
+            anchor="center"
+        )
+        self.weather_label.pack()
 
     def update_from_player(self):
         self.energy_var.set(self.player.energy)
         self.satiety_var.set(self.player.satiety)
         self.hydration_var.set(self.player.hydration)
+
+        weather_text = ""
+        if self.player.rain_effect_days > 0:
+            weather_text = f"🌧️ Pluie active ({self.player.rain_effect_days} jours restants)"
+        elif self.player.heatwave_effect_days > 0:
+            weather_text = f"☀️ Canicule active ({self.player.heatwave_effect_days} jours restants)"
+
+        self.weather_label.config(text=weather_text)
+
         self.update()
         self.update_idletasks()

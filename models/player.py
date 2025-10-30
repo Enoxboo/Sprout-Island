@@ -4,7 +4,8 @@ from config import (SATIETY_MAX, HYDRATION_MAX, ENERGY_MAX,
                     FISH_SATIETY_GAIN, FISH_ENERGY_LOSS,
                     DRINK_HYDRATION_GAIN, DRINK_ENERGY_LOSS,
                     SLEEP_ENERGY_GAIN, EXPLORE_ENERGY_LOSS,
-                    DAILY_SATIETY_LOSS, DAILY_HYDRATION_LOSS, DAILY_ENERGY_LOSS)
+                    DAILY_SATIETY_LOSS, DAILY_HYDRATION_LOSS,
+                    DAILY_ENERGY_LOSS, HEATWAVE_DAILY_HYDRATION_PENALTY)
 
 from utils.helpers import clamp
 
@@ -25,6 +26,8 @@ class Player:
         self.satiety: int = SATIETY_MAX
         self.hydration: int = HYDRATION_MAX
         self.energy: int = ENERGY_MAX
+        self.rain_effect_days: int = 0
+        self.heatwave_effect_days: int = 0
         self.actions = {
             "fish": self._fish,
             "drink": self._drink,
@@ -65,7 +68,17 @@ class Player:
     def apply_daily_losses(self):
         """Applique les pertes quotidiennes automatiques à toutes les jauges."""
         self.satiety = clamp(self.satiety - DAILY_SATIETY_LOSS, SATIETY_MIN, SATIETY_MAX)
-        self.hydration = clamp(self.hydration - DAILY_HYDRATION_LOSS, HYDRATION_MIN, HYDRATION_MAX)
+
+        hydration_loss = DAILY_HYDRATION_LOSS
+
+        if self.rain_effect_days > 0:
+            hydration_loss = 0
+            self.rain_effect_days -= 1
+        elif self.heatwave_effect_days > 0:
+            hydration_loss += HEATWAVE_DAILY_HYDRATION_PENALTY
+            self.heatwave_effect_days -= 1
+
+        self.hydration = clamp(self.hydration - hydration_loss, HYDRATION_MIN, HYDRATION_MAX)
         self.energy = clamp(self.energy - DAILY_ENERGY_LOSS, ENERGY_MIN, ENERGY_MAX)
 
     def status(self):
