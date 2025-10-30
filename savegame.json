@@ -1,0 +1,12 @@
+{
+    "player": {
+        "name": "a",
+        "satiety": 84,
+        "hydration": 40,
+        "energy": 22
+    },
+    "game": {
+        "days": 10
+    },
+    "timestamp": "2025-10-30T20:00:59.131458"
+}
