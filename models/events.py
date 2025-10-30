@@ -138,10 +138,10 @@ class EventManager:
 
     def __init__(self):
         self.events = [
-            (RainEvent(), 30),
-            (AnimalEncounterEvent(), 20),
+            (RainEvent(), 100),
+            (AnimalEncounterEvent(), 0),
         ]
-        self.no_event_chance = 50
+        self.no_event_chance = 0
         self.pending_event = None
 
     def trigger_random_event(self, player):

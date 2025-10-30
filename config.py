@@ -28,13 +28,10 @@ SLEEP_ENERGY_GAIN = 70
 EXPLORE_ENERGY_LOSS = 20
 
 # === ÉVÉNEMENTS ALÉATOIRES ===
-# Pluie : bonus d'hydratation gratuit
-RAIN_HYDRATION_GAIN = 25
+RAIN_HYDRATION_GAIN = 35
 
-# Rencontre animale - Fuir
 ANIMAL_FLEE_ENERGY_LOSS = 30
 
-# Rencontre animale - Chasser
 ANIMAL_HUNT_ENERGY_LOSS = 40
 ANIMAL_HUNT_SATIETY_GAIN = 55
 
