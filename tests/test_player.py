@@ -1,3 +1,4 @@
+"""Tests unitaires pour player."""
 from models.player import Player
 from config import (SATIETY_MAX, HYDRATION_MAX, ENERGY_MAX,
                     SATIETY_MIN, HYDRATION_MIN, ENERGY_MIN,

@@ -1,3 +1,4 @@
+"""Tests unitaires pour game manager."""
 from game.game_manager import GameManager
 from models.player import Player
 from config import DAYS_TO_WIN

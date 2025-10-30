@@ -1,3 +1,6 @@
+"""Fonctions de dessin pour créer des formes personnalisées."""
+
+
 def create_rounded_rect(canvas, x1, y1, x2, y2, radius, **kwargs):
     points = [
         x1 + radius, y1,

@@ -1,14 +1,18 @@
+"""Système d'événements aléatoires du jeu."""
 import random
 from abc import ABC, abstractmethod
 
 
 class Event(ABC):
+    """Classe abstraite pour tous les événements du jeu."""
+
     def __init__(self, name, description):
         self.name = name
         self.description = description
 
     @abstractmethod
     def trigger(self, player):
+        """Déclenche l'événement et modifie l'état du joueur."""
         pass
 
 
@@ -42,7 +46,7 @@ class RainEvent(Event):
 
 
 class AnimalEncounterEvent(Event):
-    """Événement de rencontre animale - propose un choix au joueur."""
+    """Événement de rencontre animale avec choix interactif (fuir/chasser)."""
 
     def __init__(self):
         super().__init__(
@@ -51,16 +55,7 @@ class AnimalEncounterEvent(Event):
         )
 
     def trigger(self, player):
-        """
-        Déclenche l'événement de rencontre animale.
-        Retourne les options de choix au joueur.
-
-        Args:
-            player: Instance du joueur
-
-        Returns:
-            dict: Résultat de l'événement avec choix
-        """
+        """Retourne les options de choix au joueur."""
         return {
             "message": (
                 f"🐗 {self.description}\n\n"
@@ -72,6 +67,16 @@ class AnimalEncounterEvent(Event):
         }
 
     def handle_choice(self, player, choice):
+        """
+                Traite le choix du joueur (fuir ou chasser).
+
+                Args:
+                    player: Instance du joueur
+                    choice: "flee" ou "hunt"
+
+                Returns:
+                    dict: Résultat de l'action avec message et type
+                """
         from config import (ANIMAL_FLEE_ENERGY_LOSS, ANIMAL_HUNT_ENERGY_LOSS,
                             ANIMAL_HUNT_SATIETY_GAIN, SATIETY_MAX, ENERGY_MIN)
         from utils.helpers import clamp
@@ -129,6 +134,8 @@ class AnimalEncounterEvent(Event):
 
 
 class EventManager:
+    """Gère le déclenchement aléatoire des événements selon leurs probabilités."""
+
     def __init__(self):
         self.events = [
             (RainEvent(), 30),

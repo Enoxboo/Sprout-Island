@@ -1,9 +1,12 @@
+"""Frame affichant les barres de statut du joueur (énergie, satiété, hydratation)."""
 import tkinter as tk
 from tkinter import Canvas
 from gui.shapes import create_rounded_rect
 
 
 class StatusFrame(tk.Frame):
+    """Affiche et met à jour les barres de progression des statistiques du joueur."""
+
     def __init__(self, parent, player, **kwargs):
         super().__init__(parent, **kwargs)
         self.configure(bg="#F5E6D3", padx=20, pady=15)

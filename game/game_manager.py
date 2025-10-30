@@ -1,3 +1,4 @@
+"""Gestionnaire de l'état global du jeu (jours, victoire, défaite)."""
 from config import DAYS_TO_WIN
 
 

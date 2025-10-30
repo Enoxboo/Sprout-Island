@@ -1,3 +1,4 @@
+"""Écran de démarrage avec options nouvelle partie / charger partie."""
 from tkinter import Frame, Label, Button, Entry
 
 from game.game_manager import GameManager

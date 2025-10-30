@@ -1,3 +1,4 @@
+"""Tests unitaires pour events."""
 from models.events import Event, RainEvent, EventManager
 from models.player import Player
 from config import HYDRATION_GAIN, HYDRATION_MAX, HYDRATION_MIN

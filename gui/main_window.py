@@ -1,3 +1,4 @@
+"""Fenêtre principale du jeu assemblant tous les composants GUI."""
 import os
 from tkinter import Tk
 from gui.button_frame import ButtonsFrame
@@ -9,6 +10,11 @@ from utils.save_manager import SaveManager
 
 
 class MainWindow:
+    """
+    Fenêtre principale du jeu qui coordonne l'interface et la logique.
+    Gère les interactions entre le joueur, les événements et l'affichage.
+    """
+
     def __init__(self, player, game_manager=None):
         self.main_window = Tk()
         self.main_window.title("Sprout Island")

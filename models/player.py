@@ -1,12 +1,24 @@
+"""Modèle représentant le joueur et ses actions."""
 from config import (SATIETY_MAX, HYDRATION_MAX, ENERGY_MAX,
                     SATIETY_MIN, HYDRATION_MIN, ENERGY_MIN,
                     SATIETY_GAIN, HYDRATION_GAIN, ENERGY_GAIN,
-                    SATIETY_LOSS, HYDRATION_LOSS, ENERGY_LOSS)
+                    SATIETY_LOSS, HYDRATION_LOSS, ENERGY_LOSS,
+                    DAILY_SATIETY_LOSS, DAILY_HYDRATION_LOSS, DAILY_ENERGY_LOSS)
 
 from utils.helpers import clamp
 
 
 class Player:
+    """
+        Représente le joueur avec ses statistiques et actions disponibles.
+
+        Attributes:
+            name (str): Nom du joueur
+            satiety (int): Niveau de satiété (0-100)
+            hydration (int): Niveau d'hydratation (0-100)
+            energy (int): Niveau d'énergie (0-100)
+        """
+
     def __init__(self, name):
         self.name: str = name
         self.satiety: int = SATIETY_MAX
@@ -51,9 +63,7 @@ class Player:
         return None
 
     def apply_daily_losses(self):
-        """Applique les pertes quotidiennes automatiques."""
-        from config import DAILY_SATIETY_LOSS, DAILY_HYDRATION_LOSS, DAILY_ENERGY_LOSS
-
+        """Applique les pertes quotidiennes automatiques à toutes les jauges."""
         self.satiety = clamp(self.satiety - DAILY_SATIETY_LOSS, SATIETY_MIN, SATIETY_MAX)
         self.hydration = clamp(self.hydration - DAILY_HYDRATION_LOSS, HYDRATION_MIN, HYDRATION_MAX)
         self.energy = clamp(self.energy - DAILY_ENERGY_LOSS, ENERGY_MIN, ENERGY_MAX)

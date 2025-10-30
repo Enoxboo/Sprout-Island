@@ -1,3 +1,7 @@
+"""
+Gestionnaire de sauvegarde et chargement des parties.
+Utilise JSON pour persister l'état du jeu.
+"""
 import json
 import os
 from datetime import datetime

@@ -1,3 +1,7 @@
+"""
+Configuration globale du jeu Sprout Island.
+Contient toutes les constantes pour l'équilibrage du gameplay.
+"""
 SATIETY_MAX = 100
 HYDRATION_MAX = 100
 ENERGY_MAX = 100

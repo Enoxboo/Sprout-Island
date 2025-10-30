@@ -1,3 +1,4 @@
+"""Frame affichant les messages et dialogues du jeu dans une bulle stylisée."""
 from tkinter import Frame, Canvas, Label
 from gui.shapes import create_rounded_rect
 
@@ -10,7 +11,7 @@ class DialogueFrame(Frame):
 
         self.canvas = Canvas(
             self,
-            height=120,
+            height=180,
             bg="#F5E6D3",
             highlightthickness=0,
             bd=0

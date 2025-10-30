@@ -1,3 +1,4 @@
+"""Boutons d'action personnalisés avec effets visuels (hover, click)."""
 import tkinter as tk
 from tkinter import Frame
 from gui.shapes import create_rounded_rect
