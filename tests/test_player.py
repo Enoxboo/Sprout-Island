@@ -2,8 +2,8 @@
 from models.player import Player
 from config import (SATIETY_MAX, HYDRATION_MAX, ENERGY_MAX,
                     SATIETY_MIN, HYDRATION_MIN, ENERGY_MIN,
-                    SATIETY_GAIN, HYDRATION_GAIN, ENERGY_GAIN,
-                    SATIETY_LOSS, HYDRATION_LOSS, ENERGY_LOSS)
+                    FISH_SATIETY_GAIN, DRINK_HYDRATION_GAIN, SLEEP_ENERGY_GAIN,
+                    DAILY_SATIETY_LOSS, DAILY_HYDRATION_LOSS, FISH_ENERGY_LOSS)
 
 
 def test_player_init():
@@ -22,8 +22,8 @@ def test_fish():
 
     player._fish()
 
-    assert player.satiety == 50 + SATIETY_GAIN
-    assert player.energy == 100 - ENERGY_LOSS
+    assert player.satiety == 50 + FISH_SATIETY_GAIN
+    assert player.energy == 100 - FISH_ENERGY_LOSS
     print("✓ Fish OK")
 
 
@@ -34,8 +34,8 @@ def test_drink():
 
     player._drink()
 
-    assert player.hydration == 50 + HYDRATION_GAIN
-    assert player.energy == 100 - ENERGY_LOSS
+    assert player.hydration == 50 + DRINK_HYDRATION_GAIN
+    assert player.energy == 100 - DRINK_ENERGY_LOSS
     print("✓ Drink OK")
 
 
@@ -47,9 +47,9 @@ def test_sleep():
 
     player._sleep()
 
-    assert player.energy == 50 + ENERGY_GAIN
-    assert player.satiety == 100 - SATIETY_LOSS
-    assert player.hydration == 100 - HYDRATION_LOSS
+    assert player.energy == 50 + SLEEP_ENERGY_GAIN
+    assert player.satiety == 100 - DAILY_SATIETY_LOSS
+    assert player.hydration == 100 - DAILY_HYDRATION_LOSS
     print("✓ Sleep OK")
 
 
@@ -91,7 +91,7 @@ def test_do_action_valid():
     result = player.do_action("fish")
 
     assert result == True
-    assert player.satiety == 50 + SATIETY_GAIN
+    assert player.satiety == 50 + FISH_SATIETY_GAIN
     print("✓ do_action valide OK")
 
 

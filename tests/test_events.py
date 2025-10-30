@@ -1,7 +1,7 @@
 """Tests unitaires pour events."""
 from models.events import Event, RainEvent, EventManager
 from models.player import Player
-from config import HYDRATION_GAIN, HYDRATION_MAX, HYDRATION_MIN
+from config import RAIN_HYDRATION_GAIN, HYDRATION_MAX, HYDRATION_MIN
 
 
 def test_rain_event_init():
@@ -18,7 +18,7 @@ def test_rain_event_trigger():
     event = RainEvent()
     result = event.trigger(player)
 
-    assert player.hydration == 50 + HYDRATION_GAIN
+    assert player.hydration == 50 + RAIN_HYDRATION_GAIN
 
     assert "message" in result
     assert "type" in result
@@ -126,7 +126,7 @@ def test_event_manager_guaranteed_rain():
 
     result = manager.trigger_random_event(player)
 
-    assert player.hydration == 50 + HYDRATION_GAIN
+    assert player.hydration == 50 + RAIN_HYDRATION_GAIN
     assert result["type"] == "positive"
     assert "☔" in result["message"]
     print("✓ EventManager pluie forcée OK")
@@ -138,8 +138,8 @@ def test_explore_integration():
 
     result = player._explore()
 
-    from config import ENERGY_LOSS
-    assert player.energy == initial_energy - ENERGY_LOSS
+    from config import EXPLORE_ENERGY_LOSS
+    assert player.energy == initial_energy - EXPLORE_ENERGY_LOSS
 
     assert result is not None
     assert "message" in result
