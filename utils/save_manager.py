@@ -5,6 +5,7 @@ Utilise JSON pour persister l'état du jeu.
 import json
 import os
 from datetime import datetime
+from models.player import Player
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SAVE_FILE = os.path.join(PROJECT_ROOT, "savegame.json")
@@ -91,7 +92,6 @@ class SaveManager:
 
             player_data = data['player']
 
-            from models.player import Player
             player = Player(player_data['name'])
             player.satiety = player_data['satiety']
             player.hydration = player_data['hydration']
