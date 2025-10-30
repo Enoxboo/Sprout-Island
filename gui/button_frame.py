@@ -137,11 +137,11 @@ class ButtonsFrame(Frame):
         self.buttons = {}
 
         actions_config = [
-            ("fish", "Pêcher", "#7FB3D5", "#6BA3C5"),
-            ("drink", "Boire", "#A8D5E2", "#92BFD2"),
-            ("sleep", "Dormir", "#B39DDB", "#9E88CB"),
-            ("explore", "Explorer", "#8FBC8F", "#7AAC7A"),
-            ("quit", "Quitter", "#FFB6A3", "#EFA693")
+            ("fish", "Pêcher", "#FFB6A3", "#EFA693"),
+            ("drink", "Boire", "#7FB3D5", "#6BA3C5"),
+            ("sleep", "Dormir", "#8FBC8F", "#7AAC7A"),
+            ("explore", "Explorer", "#B39DDB", "#9E88CB"),
+            ("quit", "Quitter", "#E57373", "#D96363")
         ]
 
         button_container = Frame(self, bg="#F5E6D3")
