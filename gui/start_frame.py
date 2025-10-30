@@ -69,7 +69,7 @@ class StartFrame(Frame):
 
         self.subtitle_label = Label(
             main_container,
-            text="Survivez sur l'île déserte",
+            text="Survivez 20 jours sur l'île déserte",
             font=("Segoe UI", 14),
             background="#F5E6D3",
             foreground="#5D4037"
