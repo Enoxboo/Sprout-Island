@@ -3,7 +3,7 @@ from gui.start_frame import StartFrame
 
 
 def run_game():
-    """Initialize and launch the main game loop."""
+    """Initialise et lance la boucle de jeu."""
     root = Tk()
     configure_window(root)
     start_frame = StartFrame(root)
@@ -11,7 +11,7 @@ def run_game():
 
 
 def configure_window(root):
-    """Configure the main window settings."""
+    """Configure les paramètres de la page principal."""
     root.title("Sprout Island")
     root.geometry("800x600")
     root.config(background="#F5E6D3")
