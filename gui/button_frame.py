@@ -136,20 +136,25 @@ class ButtonsFrame(Frame):
         self.action_callback = None
         self.buttons = {}
 
+        main_container = Frame(self, bg="#F5E6D3")
+        main_container.pack(expand=True)
+
+        self.action_container = Frame(main_container, bg="#F5E6D3")
+        self.action_container.pack(side="left", expand=True)
+
+        self.quit_container = Frame(main_container, bg="#F5E6D3")
+        self.quit_container.pack(side="left", padx=(20, 0))
+
         actions_config = [
             ("fish", "Pêcher", "#FFB6A3", "#EFA693"),
             ("drink", "Boire", "#7FB3D5", "#6BA3C5"),
             ("sleep", "Dormir", "#8FBC8F", "#7AAC7A"),
-            ("explore", "Explorer", "#B39DDB", "#9E88CB"),
-            ("quit", "Quitter", "#E57373", "#D96363")
+            ("explore", "Explorer", "#B39DDB", "#9E88CB")
         ]
-
-        button_container = Frame(self, bg="#F5E6D3")
-        button_container.pack(expand=True)
 
         for action, text, bg_color, hover_color in actions_config:
             btn = StyledButton(
-                button_container,
+                self.action_container,
                 text=text,
                 command=lambda a=action: self.on_button_click(a),
                 bg_color=bg_color,
@@ -157,6 +162,16 @@ class ButtonsFrame(Frame):
             )
             btn.pack(side="left", padx=8)
             self.buttons[action] = btn
+
+        quit_btn = StyledButton(
+            self.quit_container,
+            text="Quitter",
+            command=lambda: self.on_button_click("quit"),
+            bg_color="#E57373",
+            hover_color="#D96363"
+        )
+        quit_btn.pack()
+        self.buttons["quit"] = quit_btn
 
     def set_action_callback(self, callback):
         self.action_callback = callback
@@ -174,29 +189,23 @@ class ButtonsFrame(Frame):
             button.enable()
 
     def show_choice_buttons(self, choices):
-        for button in self.buttons.values():
-            button.pack_forget()
+        for key in list(self.buttons.keys()):
+            if key != "quit":
+                self.buttons[key].pack_forget()
+
+        self.buttons["quit"].pack_forget()
 
         choice_config = {
             "flee": ("Fuir", "#FFB6A3", "#EFA693"),
-            "hunt": ("Chasser", "#8FBC8F", "#7AAC7A")
+            "hunt": ("Chasser", "#8FBC8F", "#7AAC7A"),
+            "replay": ("🔄 Rejouer", "#7FB3D5", "#6BA3C5")
         }
-
-        button_container = None
-        for child in self.winfo_children():
-            if isinstance(child, Frame):
-                button_container = child
-                break
-
-        if button_container is None:
-            button_container = Frame(self, bg="#F5E6D3")
-            button_container.pack(expand=True)
 
         for choice in choices:
             if choice in choice_config:
                 text, bg_color, hover_color = choice_config[choice]
                 btn = StyledButton(
-                    button_container,
+                    self.action_container,
                     text=text,
                     command=lambda c=choice: self.on_choice_click(c),
                     bg_color=bg_color,
@@ -204,6 +213,9 @@ class ButtonsFrame(Frame):
                 )
                 btn.pack(side="left", padx=8)
                 self.buttons[f"choice_{choice}"] = btn
+
+        if "replay" in choices:
+            self.buttons["quit"].pack()
 
     def hide_choice_buttons(self):
         for key in list(self.buttons.keys()):

@@ -6,6 +6,7 @@ from gui.dialogue_frame import DialogueFrame
 from gui.status_frame import StatusFrame
 from game.game_manager import GameManager
 from models.events import EventManager
+from models.player import Player
 from utils.save_manager import SaveManager
 
 
@@ -53,6 +54,10 @@ class MainWindow:
             self.main_window.quit()
             return
 
+        if action == "replay":
+            self.restart_game()
+            return
+
         if action in ["flee", "hunt"]:
             result = self.event_manager.handle_event_choice(self.player, action)
 
@@ -61,14 +66,14 @@ class MainWindow:
                 self.status_frame.update_from_player()
 
                 if self.game_manager.check_loss_condition(self.player):
-                    self.dialogue_frame.update_text("💀 Game Over - Vous n'avez pas survécu...")
+                    self.dialogue_frame.update_text(f"💀 Game Over - Vous n'avez pas survécu plus de {self.game_manager.get_days()}...")
                     SaveManager.delete_save()
-                    self.buttons_frame.disable_buttons()
+                    self.show_game_over_buttons()
                 elif self.game_manager.check_win_condition():
                     self.dialogue_frame.update_text(
                         f"🎉 Victoire! Vous avez survécu {self.game_manager.get_days()} jours!")
                     SaveManager.delete_save()
-                    self.buttons_frame.disable_buttons()
+                    self.show_game_over_buttons()
                 else:
                     self.dialogue_frame.update_text(result["message"])
             return
@@ -85,11 +90,11 @@ class MainWindow:
             if self.game_manager.check_loss_condition(self.player):
                 self.dialogue_frame.update_text("💀 Game Over - Vous n'avez pas survécu...")
                 SaveManager.delete_save()
-                self.buttons_frame.disable_buttons()
+                self.show_game_over_buttons()
             elif self.game_manager.check_win_condition():
                 self.dialogue_frame.update_text(f"🎉 Victoire! Vous avez survécu {self.game_manager.get_days()} jours!")
                 SaveManager.delete_save()
-                self.buttons_frame.disable_buttons()
+                self.show_game_over_buttons()
             elif action == "explore":
                 event_result = self.event_manager.trigger_random_event(self.player)
 
@@ -100,3 +105,25 @@ class MainWindow:
                     self.dialogue_frame.update_text(event_result["message"])
             else:
                 self.dialogue_frame.update_text(f"☀️ Jour {self.game_manager.get_days()} - Que voulez-vous faire?")
+
+    def show_game_over_buttons(self):
+        """Affiche les boutons Rejouer et Quitter à la fin de partie."""
+        self.buttons_frame.show_choice_buttons(["replay"])
+
+    def restart_game(self):
+        """Redémarre une nouvelle partie avec le même joueur."""
+        player_name = self.player.name
+
+        self.player = Player(player_name)
+
+        self.game_manager = GameManager()
+
+        self.event_manager = EventManager()
+
+        self.status_frame.player = self.player
+        self.status_frame.update_from_player()
+
+        self.buttons_frame.hide_choice_buttons()
+        self.buttons_frame.enable_buttons()
+
+        self.dialogue_frame.update_text(f"Bienvenue {self.player.name}! Jour {self.game_manager.get_days()}")
