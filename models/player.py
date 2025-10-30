@@ -1,8 +1,9 @@
 """Modèle représentant le joueur et ses actions."""
 from config import (SATIETY_MAX, HYDRATION_MAX, ENERGY_MAX,
                     SATIETY_MIN, HYDRATION_MIN, ENERGY_MIN,
-                    SATIETY_GAIN, HYDRATION_GAIN, ENERGY_GAIN,
-                    SATIETY_LOSS, HYDRATION_LOSS, ENERGY_LOSS,
+                    FISH_SATIETY_GAIN, FISH_ENERGY_LOSS,
+                    DRINK_HYDRATION_GAIN, DRINK_ENERGY_LOSS,
+                    SLEEP_ENERGY_GAIN, EXPLORE_ENERGY_LOSS,
                     DAILY_SATIETY_LOSS, DAILY_HYDRATION_LOSS, DAILY_ENERGY_LOSS)
 
 from utils.helpers import clamp
@@ -10,14 +11,14 @@ from utils.helpers import clamp
 
 class Player:
     """
-        Représente le joueur avec ses statistiques et actions disponibles.
+    Représente le joueur avec ses statistiques et actions disponibles.
 
-        Attributes:
-            name (str): Nom du joueur
-            satiety (int): Niveau de satiété (0-100)
-            hydration (int): Niveau d'hydratation (0-100)
-            energy (int): Niveau d'énergie (0-100)
-        """
+    Attributes:
+        name (str): Nom du joueur
+        satiety (int): Niveau de satiété (0-100)
+        hydration (int): Niveau d'hydratation (0-100)
+        energy (int): Niveau d'énergie (0-100)
+    """
 
     def __init__(self, name):
         self.name: str = name
@@ -35,24 +36,23 @@ class Player:
         return self.satiety <= SATIETY_MIN or self.hydration <= HYDRATION_MIN or self.energy <= ENERGY_MIN
 
     def _fish(self):
-        self.satiety = clamp(self.satiety + SATIETY_GAIN, SATIETY_MIN, SATIETY_MAX)
-        self.energy = clamp(self.energy - ENERGY_LOSS, ENERGY_MIN, ENERGY_MAX)
+        """Pêcher du poisson : augmente la satiété, coûte de l'énergie."""
+        self.satiety = clamp(self.satiety + FISH_SATIETY_GAIN, SATIETY_MIN, SATIETY_MAX)
+        self.energy = clamp(self.energy - FISH_ENERGY_LOSS, ENERGY_MIN, ENERGY_MAX)
 
     def _drink(self):
-        self.hydration = clamp(self.hydration + HYDRATION_GAIN, HYDRATION_MIN, HYDRATION_MAX)
-        self.energy = clamp(self.energy - ENERGY_LOSS, ENERGY_MIN, ENERGY_MAX)
+        """Boire de l'eau : augmente l'hydratation, coûte de l'énergie."""
+        self.hydration = clamp(self.hydration + DRINK_HYDRATION_GAIN, HYDRATION_MIN, HYDRATION_MAX)
+        self.energy = clamp(self.energy - DRINK_ENERGY_LOSS, ENERGY_MIN, ENERGY_MAX)
 
     def _sleep(self):
-        self.energy = clamp(self.energy + ENERGY_GAIN, ENERGY_MIN, ENERGY_MAX)
-        self.satiety = clamp(self.satiety - SATIETY_LOSS, SATIETY_MIN, SATIETY_MAX)
-        self.hydration = clamp(self.hydration - HYDRATION_LOSS, HYDRATION_MIN, HYDRATION_MAX)
+        """Dormir : récupère de l'énergie. Les pertes quotidiennes ne sont PAS appliquées après cette action."""
+        self.energy = clamp(self.energy + SLEEP_ENERGY_GAIN, ENERGY_MIN, ENERGY_MAX)
+        # Important : pas de pertes ici, elles seront gérées différemment dans game_manager
 
     def _explore(self):
-        from config import ENERGY_LOSS, ENERGY_MIN
-        from utils.helpers import clamp
-
-        self.energy = clamp(self.energy - ENERGY_LOSS, ENERGY_MIN, ENERGY_MAX)
-
+        """Explorer l'île : coûte de l'énergie, peut déclencher des événements."""
+        self.energy = clamp(self.energy - EXPLORE_ENERGY_LOSS, ENERGY_MIN, ENERGY_MAX)
         return None
 
     def do_action(self, action_name):

@@ -24,12 +24,12 @@ class RainEvent(Event):
         )
 
     def trigger(self, player):
-        from config import HYDRATION_GAIN, HYDRATION_MAX
+        from config import RAIN_HYDRATION_GAIN, HYDRATION_MAX
         from utils.helpers import clamp
 
         old_hydration = player.hydration
         player.hydration = clamp(
-            player.hydration + HYDRATION_GAIN,
+            player.hydration + RAIN_HYDRATION_GAIN,
             0,
             HYDRATION_MAX
         )
@@ -68,15 +68,15 @@ class AnimalEncounterEvent(Event):
 
     def handle_choice(self, player, choice):
         """
-                Traite le choix du joueur (fuir ou chasser).
+        Traite le choix du joueur (fuir ou chasser).
 
-                Args:
-                    player: Instance du joueur
-                    choice: "flee" ou "hunt"
+        Args:
+            player: Instance du joueur
+            choice: "flee" ou "hunt"
 
-                Returns:
-                    dict: Résultat de l'action avec message et type
-                """
+        Returns:
+            dict: Résultat de l'action avec message et type
+        """
         from config import (ANIMAL_FLEE_ENERGY_LOSS, ANIMAL_HUNT_ENERGY_LOSS,
                             ANIMAL_HUNT_SATIETY_GAIN, SATIETY_MAX, ENERGY_MIN)
         from utils.helpers import clamp
