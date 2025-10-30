@@ -172,6 +172,46 @@ class FindFruitEvent(Event):
             "type": "positive"
         }
 
+class HeatwaveEvent(Event):
+    """Événement de canicule causant déshydratation et fatigue."""
+
+    def __init__(self):
+        super().__init__(
+            "Canicule accablante",
+            "Une vague de chaleur intense s'abat sur l'île!"
+        )
+
+    def trigger(self, player):
+        from config import HEATWAVE_HYDRATION_LOSS, HEATWAVE_ENERGY_LOSS, HYDRATION_MIN, ENERGY_MIN
+        from utils.helpers import clamp
+
+        old_hydration = player.hydration
+        old_energy = player.energy
+
+        player.hydration = clamp(
+            player.hydration - HEATWAVE_HYDRATION_LOSS,
+            HYDRATION_MIN,
+            player.hydration
+        )
+        player.energy = clamp(
+            player.energy - HEATWAVE_ENERGY_LOSS,
+            ENERGY_MIN,
+            player.energy
+        )
+
+        actual_hydration_loss = old_hydration - player.hydration
+        actual_energy_loss = old_energy - player.energy
+
+        return {
+            "message": (
+                f"🌡️ {self.description}\n\n"
+                f"Le soleil brûlant vous épuise rapidement.\n"
+                f"💧 Hydratation -{actual_hydration_loss}\n"
+                f"⚡ Énergie -{actual_energy_loss}"
+            ),
+            "type": "negative"
+        }
+
 class EventManager:
     """Gère le déclenchement aléatoire des événements selon leurs probabilités."""
 
@@ -180,8 +220,9 @@ class EventManager:
             (RainEvent(), 30),
             (AnimalEncounterEvent(), 20),
             (FindFruitEvent(), 25),
+            (HeatwaveEvent(), 20),
         ]
-        self.no_event_chance = 25
+        self.no_event_chance = 5
         self.pending_event = None
 
     def trigger_random_event(self, player):
