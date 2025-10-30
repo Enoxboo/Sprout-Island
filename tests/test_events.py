@@ -160,7 +160,8 @@ def test_event_manager_trigger():
         event_types[result["type"]] += 1
 
     assert event_types["neutral"] > 0
-    print(f"✓ EventManager distribution OK (Neutres: {event_types['neutral']}, Positifs: {event_types['positive']}, Négatifs: {event_types['negative']}, Choix: {event_types['choice']})")
+    print(
+        f"✓ EventManager distribution OK (Neutres: {event_types['neutral']}, Positifs: {event_types['positive']}, Négatifs: {event_types['negative']}, Choix: {event_types['choice']})")
 
 
 def test_event_manager_pending_event():

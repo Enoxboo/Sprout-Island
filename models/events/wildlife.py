@@ -1,6 +1,7 @@
 """Événements liés à la faune."""
 from models.events.base import Event
 
+
 class AnimalEncounterEvent(Event):
     def __init__(self):
         super().__init__(
