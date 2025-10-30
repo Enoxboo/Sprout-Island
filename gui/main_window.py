@@ -70,6 +70,8 @@ class MainWindow:
         if action in self.player.actions:
             result = self.player.do_action(action)
 
+            self.player.apply_daily_losses()
+
             self.game_manager.increment_day()
             self.status_frame.update_from_player()
             SaveManager.save_game(self.player, self.game_manager)

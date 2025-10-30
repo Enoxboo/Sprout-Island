@@ -50,5 +50,13 @@ class Player:
             return result
         return None
 
+    def apply_daily_losses(self):
+        """Applique les pertes quotidiennes automatiques."""
+        from config import DAILY_SATIETY_LOSS, DAILY_HYDRATION_LOSS, DAILY_ENERGY_LOSS
+
+        self.satiety = clamp(self.satiety - DAILY_SATIETY_LOSS, SATIETY_MIN, SATIETY_MAX)
+        self.hydration = clamp(self.hydration - DAILY_HYDRATION_LOSS, HYDRATION_MIN, HYDRATION_MAX)
+        self.energy = clamp(self.energy - DAILY_ENERGY_LOSS, ENERGY_MIN, ENERGY_MAX)
+
     def status(self):
         print(f"Player status: {self.name}. {self.satiety}. {self.hydration}. {self.energy}.")
