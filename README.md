@@ -56,7 +56,7 @@ Survivez **20 jours** sur l'île en maintenant vos statistiques au-dessus de zé
 ### Cloner le projet
 
 ```bash
-git clone https://github.com/votre-username/Sprout-Island.git
+git clone https://github.com/Enoxboo/Sprout-Island.git
 cd Sprout-Island
 ```
 
